@@ -12,14 +12,14 @@ const ERRORS = {
 };
 
 /**
- * Base class for any Receiver extends Promise functionality.
- * Receiver is a class of objects which can perform some simple action
+ * Base class for any Executor extends Promise functionality.
+ * Executor is a class of objects which can perform some simple action
  * (e.g. AJAX request or function call) and return received data asynchronously.
  * Exposes .resolve(), .reject() methods and .timings, this.timeout properties.
  * @class
  * @param {Object} options - input parameters
  */
-const BaseReceiver = function (options) {
+const Executor = function (options) {
   const $this = this;
 
   /**
@@ -46,7 +46,7 @@ const BaseReceiver = function (options) {
     $this.resolve = function (...args) {
       resolve(...args);
 
-      // "this" here is a ref to derived class instance, where "_this" is a ref to BaseReceiver instance
+      // "this" here is a ref to derived class instance, where "_this" is a ref to Executor instance
       this.$finalize(STATES.RESOLVED);
     };
     $this.reject = function (reason, ...args) {
@@ -78,7 +78,7 @@ const BaseReceiver = function (options) {
   });
 };
 
-BaseReceiver.prototype = {
+Executor.prototype = {
   /**
    * Returns promise which will be resolved when data is received.
    * @returns {Promise} - a promise
@@ -123,7 +123,7 @@ BaseReceiver.prototype = {
   },
 };
 
-BaseReceiver.STATES = STATES;
-BaseReceiver.ERRORS = ERRORS;
+Executor.STATES = STATES;
+Executor.ERRORS = ERRORS;
 
-export default BaseReceiver;
+export default Executor;
