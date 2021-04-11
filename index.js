@@ -1,20 +1,15 @@
-const log = require('logger')(module)
-let window = require('browser').window
-let Promise = window.Promise || require('promise-polyfill')
-let TimeoutPromise = require('TimeoutPromise')
-let extend = require('backbone').Model.extend
-let utils = require('utils')
+import Timeout from '@js-bits/timeout';
 
-let STATES = {
+const STATES = {
   // we can also add CREATED:'created' if necessary
   EXECUTED: 'executed',
   RESOLVED: 'resolved',
-  REJECTED: 'rejected'
-}
+  REJECTED: 'rejected',
+};
 
-let ERRORS = {
-  INITIALIZATION: 'BaseReceiverInitializationError'
-}
+const ERRORS = {
+  INITIALIZATION: 'BaseReceiverInitializationError',
+};
 
 /**
  * Base class for any Receiver extends Promise functionality.
@@ -24,85 +19,78 @@ let ERRORS = {
  * @class
  * @param {Object} options - input parameters
  */
-let BaseReceiver = function (options) {
-  let _this = this
+const BaseReceiver = function (options) {
+  const $this = this;
 
   /**
    * @private
    */
-  this._options = options || {}
+  this.$options = options || {};
 
   /**
    * Reference to store performance timings
    * @type {Object}
    */
-  this.timings = this._options.timings || {}
+  this.timings = this.$options.timings || {};
 
   // make sure all timings are reset
-  for (let name in this.timings) {
-    this.timings[name] = undefined
-  }
+  Object.keys(this.timings).forEach(name => {
+    this.timings[name] = undefined;
+  });
 
   /**
    * Internal promise
    * @private
    */
-  this._promise = new Promise(function (resolve, reject) {
-    _this.resolve = function () {
-      resolve.apply(null, arguments)
+  this.$promise = new Promise((resolve, reject) => {
+    $this.resolve = function (...args) {
+      resolve(...args);
 
       // "this" here is a ref to derived class instance, where "_this" is a ref to BaseReceiver instance
-      this._finalize(STATES.RESOLVED)
-    }
-    _this.reject = function (reason) {
-      if (
-        !this.timings[STATES.EXECUTED] &&
-        reason.name === Error.prototype.name
-      ) {
-        reason.name = ERRORS.INITIALIZATION
+      this.$finalize(STATES.RESOLVED);
+    };
+    $this.reject = function (reason, ...args) {
+      if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
+        reason.name = ERRORS.INITIALIZATION;
       }
 
-      reject.apply(null, arguments)
-      this._finalize(STATES.REJECTED)
-    }
-  })
+      reject(reason, ...args);
+      this.$finalize(STATES.REJECTED);
+    };
+  });
 
-  if (this._options.timeout instanceof TimeoutPromise) {
+  if (this.$options.timeout instanceof Timeout) {
     // soft timeout will be caught and processed externally
-    this.timeout = this._options.timeout
+    this.timeout = this.$options.timeout;
   } else {
     // hard timeout (rejects the receiver if exceeded) or no timeout
-    this.timeout = new TimeoutPromise(this._options.timeout)
-    this.timeout.catch(this.reject.bind(this))
+    this.timeout = new Timeout(this.$options.timeout);
+    this.timeout.catch(this.reject.bind(this));
   }
 
   // We need to catch a situation when promise gets immediately rejected inside constructor
   // to prevent log messages or breakpoints in browser console. The reason of the rejection
   // can be caught (or will throw an error if not caught) later when .get() method is invoked.
-  this._promise.catch(function (reason) {
-    if (!_this.timings[STATES.EXECUTED]) {
-      log.debug('Rejected inside constructor', reason)
+  this.$promise.catch(reason => {
+    if (!$this.timings[STATES.EXECUTED]) {
+      // log.debug('Rejected inside constructor', reason);
     }
-  })
-}
+  });
+};
 
 BaseReceiver.prototype = {
   /**
    * Returns promise which will be resolved when data is received.
    * @returns {Promise} - a promise
    */
-  get: function () {
-    if (
-      !this.timings[STATES.EXECUTED] &&
-      !this.timings[STATES.RESOLVED] &&
-      !this.timings[STATES.REJECTED]
-    ) {
-      this._execute.apply(this, arguments)
-      this._setTiming(STATES.EXECUTED)
-      this.timeout.start()
+  get(...args) {
+    if (!this.timings[STATES.EXECUTED] && !this.timings[STATES.RESOLVED] && !this.timings[STATES.REJECTED]) {
+      this.$execute.apply(this, ...args);
+      this.$setTiming(STATES.EXECUTED);
+      this.timeout.start();
     }
 
-    return this._promise
+    return this.$promise;
   },
 
   /**
@@ -110,8 +98,8 @@ BaseReceiver.prototype = {
    * @protected
    * @returns {void}
    */
-  _execute: function () {
-    this.reject(new Error('._execute() method must be implemented'))
+  $execute() {
+    this.reject(new Error('._execute() method must be implemented'));
   },
 
   /**
@@ -120,8 +108,8 @@ BaseReceiver.prototype = {
    * @param {string} state - 'executed', 'resolved' or 'rejected'
    * @returns {void}
    */
-  _setTiming: function (state) {
-    this.timings[state] = utils.getTiming()
+  $setTiming(state) {
+    this.timings[state] = Math.round(window.performance.now()); // milliseconds
   },
 
   /**
@@ -129,14 +117,13 @@ BaseReceiver.prototype = {
    * @param {string} state - 'executed', 'resolved' or 'rejected'
    * @returns {void}
    */
-  _finalize: function (state) {
-    this.timeout.stop()
-    this._setTiming(state)
-  }
-}
+  $finalize(state) {
+    this.timeout.stop();
+    this.$setTiming(state);
+  },
+};
 
-BaseReceiver.extend = extend
-BaseReceiver.STATES = STATES
-BaseReceiver.ERRORS = ERRORS
+BaseReceiver.STATES = STATES;
+BaseReceiver.ERRORS = ERRORS;
 
-module.exports = BaseReceiver
+export default BaseReceiver;
