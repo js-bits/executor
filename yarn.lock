@@ -529,6 +529,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@js-bits/enumerate@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-0.1.2.tgz#9bf93208520e379efb7919deca69b8fce8c25c80"
+  integrity sha512-zGngkr0GuhE42/SjZZbOd96RFE6jDI54sOO0wvpvc/S9AMP2BeIFcnbYSBjs0+iiBuvmsomnREcbelUczH8e/g==
+
 "@js-bits/eslint-config@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@js-bits/eslint-config/-/eslint-config-0.0.2.tgz#9a36de5c6b4df2ce15d6bb7e5b4ae48ca29d2e03"
@@ -552,10 +557,12 @@
     eslint-plugin-react-hooks "^4.2.0"
     prettier "^2.2.1"
 
-"@js-bits/timeout@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.0.1.tgz#5cb89dc4278d81933cefa30d44f454bfe5db7e5e"
-  integrity sha512-berLkREbj5M+Xo/J3kfzyxgP2ULoce7zLkm/OIGm0fUtOeWNoXccvEbzcX+GUKG9Ms1xsA/2lXTFlLVlw58tJA==
+"@js-bits/timeout@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.0.3.tgz#845a568c484c3cba6666e4ba5d246e3f2f8d98ce"
+  integrity sha512-/I+sYg4Eu/9FS3HnfwPxaiHKm2RIU14Q0u45U9v/US1Rfad7Bgsqqji03t6T/BeXmT8XIM6yQ+MTk79QEHzJ/w==
+  dependencies:
+    "@js-bits/enumerate" "^0.1.2"
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
