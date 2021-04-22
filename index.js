@@ -5,6 +5,7 @@ import performance from '@js-bits/performance';
 // pseudo-private properties emulation in order to avoid source code transpiling
 // TODO: replace with #privateField syntax when it gains wide support
 const ø = enumerate`
+  options
   promise
   setTiming
   finalize
@@ -31,21 +32,23 @@ const ERRORS = enumerate(String)`
  * @param {Object} options - input parameters
  */
 class Executor {
-  constructor(options) {
+  constructor(options = {}) {
     /**
      * @private
      */
-    this.$options = options || {};
+    this[ø.options] = options;
+
+    const { timings = {}, timeout } = options;
 
     /**
      * Reference to store performance timings
      * @type {Object}
      */
-    this.timings = this.$options.timings || {};
+    this.timings = timings;
 
     // make sure all timings are reset
-    Object.keys(this.timings).forEach(name => {
-      this.timings[name] = undefined;
+    Object.keys(timings).forEach(name => {
+      timings[name] = undefined;
     });
 
     /**
@@ -67,12 +70,12 @@ class Executor {
       };
     });
 
-    if (this.$options.timeout instanceof Timeout) {
+    if (timeout instanceof Timeout) {
       // soft timeout will be caught and processed externally
-      this.timeout = this.$options.timeout;
-    } else if (this.$options.timeout !== undefined) {
+      this.timeout = timeout;
+    } else if (timeout !== undefined) {
       // hard timeout (rejects the receiver if exceeded) or no timeout
-      this.timeout = new Timeout(this.$options.timeout);
+      this.timeout = new Timeout(timeout);
       this.timeout.catch(this.reject.bind(this));
     }
 

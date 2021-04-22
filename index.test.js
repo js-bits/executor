@@ -131,8 +131,8 @@ describe(`Executor: ${env}`, () => {
           executor.resolve();
           expect(executor.timings.resolved).toBeGreaterThan(0);
           const duration = executor.timings.resolved - executor.timings.executed;
-          expect(duration).toBeGreaterThanOrEqual(100);
-          expect(duration).toBeLessThanOrEqual(200);
+          expect(duration).toBeGreaterThanOrEqual(80);
+          expect(duration).toBeLessThanOrEqual(150);
         }, 100);
         return promise.catch(() => {});
       });
@@ -182,8 +182,8 @@ describe(`Executor: ${env}`, () => {
           executor.reject(new Error());
           expect(executor.timings.rejected).toBeGreaterThan(0);
           const duration = executor.timings.rejected - executor.timings.executed;
-          expect(duration).toBeGreaterThanOrEqual(100);
-          expect(duration).toBeLessThanOrEqual(200);
+          expect(duration).toBeGreaterThanOrEqual(80);
+          expect(duration).toBeLessThanOrEqual(150);
         }, 100);
         return promise.catch(() => {});
       });
