@@ -29,62 +29,62 @@ const ERRORS = enumerate(String)`
  * @class
  * @param {Object} options - input parameters
  */
-const Executor = function (options) {
-  /**
-   * @private
-   */
-  this.$options = options || {};
+class Executor {
+  constructor(options) {
+    /**
+     * @private
+     */
+    this.$options = options || {};
 
-  /**
-   * Reference to store performance timings
-   * @type {Object}
-   */
-  this.timings = this.$options.timings || {};
+    /**
+     * Reference to store performance timings
+     * @type {Object}
+     */
+    this.timings = this.$options.timings || {};
 
-  // make sure all timings are reset
-  Object.keys(this.timings).forEach(name => {
-    this.timings[name] = undefined;
-  });
+    // make sure all timings are reset
+    Object.keys(this.timings).forEach(name => {
+      this.timings[name] = undefined;
+    });
 
-  /**
-   * Internal promise
-   * @private
-   */
-  this.$promise = new Promise((resolve, reject) => {
-    this.resolve = (...args) => {
-      resolve(...args);
-      this[ø.finalize](STATES.RESOLVED);
-    };
-    this.reject = (reason, ...args) => {
-      if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
-        reason.name = ERRORS.ExecutorInitializationError;
+    /**
+     * Internal promise
+     * @private
+     */
+    this.$promise = new Promise((resolve, reject) => {
+      this.resolve = (...args) => {
+        resolve(...args);
+        this[ø.finalize](STATES.RESOLVED);
+      };
+      this.reject = (reason, ...args) => {
+        if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
+          reason.name = ERRORS.ExecutorInitializationError;
+        }
+
+        reject(reason, ...args);
+        this[ø.finalize](STATES.REJECTED);
+      };
+    });
+
+    if (this.$options.timeout instanceof Timeout) {
+      // soft timeout will be caught and processed externally
+      this.timeout = this.$options.timeout;
+    } else if (this.$options.timeout !== undefined) {
+      // hard timeout (rejects the receiver if exceeded) or no timeout
+      this.timeout = new Timeout(this.$options.timeout);
+      this.timeout.catch(this.reject.bind(this));
+    }
+
+    // We need to catch a situation when promise gets immediately rejected inside constructor
+    // to prevent log messages or breakpoints in browser console. The reason of the rejection
+    // can be caught (or will throw an error if not caught) later when .get() method is invoked.
+    this.$promise.catch(reason => {
+      if (!this.timings[STATES.EXECUTED]) {
+        // log.debug('Rejected inside constructor', reason);
       }
-
-      reject(reason, ...args);
-      this[ø.finalize](STATES.REJECTED);
-    };
-  });
-
-  if (this.$options.timeout instanceof Timeout) {
-    // soft timeout will be caught and processed externally
-    this.timeout = this.$options.timeout;
-  } else if (this.$options.timeout !== undefined) {
-    // hard timeout (rejects the receiver if exceeded) or no timeout
-    this.timeout = new Timeout(this.$options.timeout);
-    this.timeout.catch(this.reject.bind(this));
+    });
   }
 
-  // We need to catch a situation when promise gets immediately rejected inside constructor
-  // to prevent log messages or breakpoints in browser console. The reason of the rejection
-  // can be caught (or will throw an error if not caught) later when .get() method is invoked.
-  this.$promise.catch(reason => {
-    if (!this.timings[STATES.EXECUTED]) {
-      // log.debug('Rejected inside constructor', reason);
-    }
-  });
-};
-
-Executor.prototype = {
   /**
    * Returns promise which will be resolved when data is received.
    * @returns {Promise} - a promise
@@ -97,7 +97,7 @@ Executor.prototype = {
     }
 
     return this.$promise;
-  },
+  }
 
   /**
    * Derived classes must implement .$execute() method performing corresponding action.
@@ -106,7 +106,7 @@ Executor.prototype = {
    */
   $execute() {
     this.reject(new Error('.$execute() method must be implemented'));
-  },
+  }
 
   /**
    * Measures performance metrics
@@ -116,7 +116,7 @@ Executor.prototype = {
    */
   [ø.setTiming](state) {
     this.timings[state] = Math.round(performance.now()); // milliseconds
-  },
+  }
 
   /**
    * @private
@@ -126,8 +126,8 @@ Executor.prototype = {
   [ø.finalize](state) {
     if (this.timeout) this.timeout.clear();
     this[ø.setTiming](state);
-  },
-};
+  }
+}
 
 Executor.STATES = STATES;
 Object.assign(Executor, ERRORS);
