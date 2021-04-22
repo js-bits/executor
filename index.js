@@ -5,6 +5,7 @@ import performance from '@js-bits/performance';
 // pseudo-private properties emulation in order to avoid source code transpiling
 // TODO: replace with #privateField syntax when it gains wide support
 const ø = enumerate`
+  promise
   setTiming
   finalize
 `;
@@ -51,7 +52,7 @@ class Executor {
      * Internal promise
      * @private
      */
-    this.$promise = new Promise((resolve, reject) => {
+    this[ø.promise] = new Promise((resolve, reject) => {
       this.resolve = (...args) => {
         resolve(...args);
         this[ø.finalize](STATES.RESOLVED);
@@ -78,7 +79,7 @@ class Executor {
     // We need to catch a situation when promise gets immediately rejected inside constructor
     // to prevent log messages or breakpoints in browser console. The reason of the rejection
     // can be caught (or will throw an error if not caught) later when .get() method is invoked.
-    this.$promise.catch(reason => {
+    this[ø.promise].catch(reason => {
       if (!this.timings[STATES.EXECUTED]) {
         // log.debug('Rejected inside constructor', reason);
       }
@@ -96,7 +97,7 @@ class Executor {
       if (this.timeout) this.timeout.set();
     }
 
-    return this.$promise;
+    return this[ø.promise];
   }
 
   /**
