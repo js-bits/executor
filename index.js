@@ -1,10 +1,12 @@
 import Timeout from '@js-bits/timeout';
+import performance from '@js-bits/performance';
 
 const STATES = {
   // we can also add CREATED:'created' if necessary
   EXECUTED: 'executed',
   RESOLVED: 'resolved',
   REJECTED: 'rejected',
+  // SETTLED // either 'resolved' or 'rejected'
 };
 
 const ERRORS = {
@@ -62,7 +64,7 @@ const Executor = function (options) {
   if (this.$options.timeout instanceof Timeout) {
     // soft timeout will be caught and processed externally
     this.timeout = this.$options.timeout;
-  } else {
+  } else if (this.$options.timeout !== undefined) {
     // hard timeout (rejects the receiver if exceeded) or no timeout
     this.timeout = new Timeout(this.$options.timeout);
     this.timeout.catch(this.reject.bind(this));
@@ -85,21 +87,21 @@ Executor.prototype = {
    */
   get(...args) {
     if (!this.timings[STATES.EXECUTED] && !this.timings[STATES.RESOLVED] && !this.timings[STATES.REJECTED]) {
-      this.$execute.apply(this, ...args);
+      this.$execute(...args);
       this.$setTiming(STATES.EXECUTED);
-      this.timeout.start();
+      if (this.timeout) this.timeout.start();
     }
 
     return this.$promise;
   },
 
   /**
-   * Derived classes must implement ._execute() method performing corresponding action.
+   * Derived classes must implement .$execute() method performing corresponding action.
    * @protected
    * @returns {void}
    */
   $execute() {
-    this.reject(new Error('._execute() method must be implemented'));
+    this.reject(new Error('.$execute() method must be implemented'));
   },
 
   /**
@@ -109,7 +111,7 @@ Executor.prototype = {
    * @returns {void}
    */
   $setTiming(state) {
-    this.timings[state] = Math.round(window.performance.now()); // milliseconds
+    this.timings[state] = Math.round(performance.now()); // milliseconds
   },
 
   /**
@@ -118,7 +120,7 @@ Executor.prototype = {
    * @returns {void}
    */
   $finalize(state) {
-    this.timeout.stop();
+    if (this.timeout) this.timeout.stop();
     this.$setTiming(state);
   },
 };

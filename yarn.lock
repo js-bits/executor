@@ -557,6 +557,16 @@
     eslint-plugin-react-hooks "^4.2.0"
     prettier "^2.2.1"
 
+"@js-bits/log-in-color@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@js-bits/log-in-color/-/log-in-color-0.0.2.tgz#f5e370d5978d7977dbef375b2f66f18b4e564a32"
+  integrity sha512-ojDTAqbgW8m24GXUIIKvRUXfusZqzKF4ANIWJMSmvTJB+V8dgbtE3mytJh6oBGhu8HZ1nCJFeNjKQzNV6rAx4g==
+
+"@js-bits/performance@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-0.0.3.tgz#22278e4d1e393acb90dfc08686c2102953f48bfc"
+  integrity sha512-A6n4hid7/sOBOndJV2XdOcPik04BrdTmXzK28IX22wq+nuFV6aBCwh/aEte4UlLDRPSj7WbLREE2DYbISiDD3Q==
+
 "@js-bits/timeout@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.0.3.tgz#845a568c484c3cba6666e4ba5d246e3f2f8d98ce"

@@ -12,7 +12,7 @@
   "module": "./index.js",
   "exports": "./index.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "test-coverage": "yarn test --coverage",
     "test-watch": "yarn test --watch",
     "lint": "eslint '**/*.{js,jsx}'"
@@ -25,6 +25,7 @@
   "license": "ISC",
   "devDependencies": {
     "@js-bits/formalinter": "^0.1.2",
+    "@js-bits/log-in-color": "^0.0.2",
     "@types/jest": "^26.0.22",
     "jest": "^26.6.3"
   },
@@ -36,6 +37,19 @@
     "extends": "@js-bits/eslint-config/.eslintrc.json"
   },
   "dependencies": {
+    "@js-bits/performance": "^0.0.3",
     "@js-bits/timeout": "^0.0.3"
+  },
+  "jest": {
+    "projects": [
+      {
+        "displayName": "node",
+        "testEnvironment": "node"
+      },
+      {
+        "displayName": "jsdom",
+        "testEnvironment": "jsdom"
+      }
+    ]
   }
 }
