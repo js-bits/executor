@@ -7,18 +7,20 @@ import Executor from './index.js';
 const env = cyan(`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`);
 
 describe(`Executor: ${env}`, () => {
-  describe('#get', () => {
-    let executor;
-    beforeEach(() => {
-      class TestExecutor extends Executor {
-        constructor() {
-          super();
-          this.$execute = jest.fn();
-        }
+  let executor;
+  let TestExecutor;
+  beforeEach(() => {
+    class ExtExecutor extends Executor {
+      constructor(...arg) {
+        super(...arg);
+        this.$execute = jest.fn();
       }
-      executor = new TestExecutor();
-    });
+    }
+    TestExecutor = ExtExecutor;
+    executor = new TestExecutor();
+  });
 
+  describe('#get', () => {
     test('should return a promise', () => {
       expect(executor.get()).toBeInstanceOf(Promise);
     });
@@ -36,20 +38,22 @@ describe(`Executor: ${env}`, () => {
       executor.get();
       expect(executor.timings.executed).toBeDefined();
     });
+
+    describe('when a timeout is specified', () => {
+      test('should start the timeout', () => {
+        executor = new TestExecutor({
+          timeout: 100,
+        });
+        executor.timeout.start = jest.fn();
+        executor.get();
+        executor.get();
+        executor.get();
+        expect(executor.timeout.start).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   describe('#resolve', () => {
-    let executor;
-    beforeEach(() => {
-      class TestExecutor extends Executor {
-        constructor() {
-          super();
-          this.$execute = jest.fn();
-        }
-      }
-      executor = new TestExecutor();
-    });
-
     test('should resolve the promise with the first passed argument', async () => {
       expect.assertions(1);
       executor.resolve(123, 'str', true);
@@ -85,20 +89,20 @@ describe(`Executor: ${env}`, () => {
         return promise.catch(() => {});
       });
     });
+
+    describe('when a timeout is specified', () => {
+      test('should stop the timeout', () => {
+        executor = new TestExecutor({
+          timeout: 100,
+        });
+        executor.timeout.stop = jest.fn();
+        executor.resolve();
+        expect(executor.timeout.stop).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   describe('#reject', () => {
-    let executor;
-    beforeEach(() => {
-      class TestExecutor extends Executor {
-        constructor() {
-          super();
-          this.$execute = jest.fn();
-        }
-      }
-      executor = new TestExecutor();
-    });
-
     describe("when haven't been executed", () => {
       test('should reject the promise with BaseReceiverInitializationError', async () => {
         expect.assertions(2);
@@ -148,16 +152,27 @@ describe(`Executor: ${env}`, () => {
         });
       });
     });
+
+    describe('when a timeout is specified', () => {
+      test('should stop the timeout', () => {
+        executor = new TestExecutor({
+          timeout: 100,
+        });
+        executor.timeout.stop = jest.fn();
+        executor.reject(new Error());
+        expect(executor.timeout.stop).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   describe('#$execute', () => {
     test('should reject the promise when $execute is not implemented in a derived class', async () => {
       expect.assertions(2);
-      class TestExecutor extends Executor {}
-      const executor = new TestExecutor();
+      class ExtExecutor extends Executor {}
+      const ex = new ExtExecutor();
 
-      executor.$execute();
-      return executor.get().catch(error => {
+      ex.$execute();
+      return ex.get().catch(error => {
         expect(error.name).toEqual('BaseReceiverInitializationError');
         expect(error.message).toEqual('.$execute() method must be implemented');
       });
