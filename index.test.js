@@ -2,6 +2,7 @@
 // import { performance } from 'perf_hooks';
 import { jest } from '@jest/globals';
 import { cyan } from '@js-bits/log-in-color';
+import Timeout from '@js-bits/timeout';
 import Executor from './index.js';
 
 const env = cyan(`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`);
@@ -18,6 +19,53 @@ describe(`Executor: ${env}`, () => {
     }
     TestExecutor = ExtExecutor;
     executor = new TestExecutor();
+  });
+
+  describe('#constructor', () => {
+    describe('when an external timings object is passed', () => {
+      test('should use the passed object', () => {
+        const timings = {};
+        executor = new TestExecutor({
+          timings,
+        });
+        expect(executor.timings).toBe(timings);
+      });
+
+      test('should reset all properties of the passed object', () => {
+        const timings = {
+          prop1: 1,
+          prop2: 2,
+        };
+        executor = new TestExecutor({
+          timings,
+        });
+        expect(executor.timings).toEqual({
+          prop1: undefined,
+          prop2: undefined,
+        });
+      });
+    });
+
+    describe('when an external timeout is passed', () => {
+      describe('when an external timeout is an object', () => {
+        test('should use the passed timeout object', () => {
+          const timeout = new Timeout(1000);
+          executor = new TestExecutor({
+            timeout,
+          });
+          expect(executor.timeout).toBe(timeout);
+        });
+      });
+
+      describe('when an external timeout is a number', () => {
+        test('should create a timeout', () => {
+          executor = new TestExecutor({
+            timeout: 100,
+          });
+          expect(executor.timeout).toBeInstanceOf(Timeout);
+        });
+      });
+    });
   });
 
   describe('#get', () => {
