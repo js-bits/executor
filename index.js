@@ -7,6 +7,8 @@ import performance from '@js-bits/performance';
 const ø = enumerate`
   options
   promise
+  resolve
+  reject
   setTiming
   finalize
 `;
@@ -56,18 +58,8 @@ class Executor {
      * @private
      */
     this[ø.promise] = new Promise((resolve, reject) => {
-      this.resolve = (...args) => {
-        resolve(...args);
-        this[ø.finalize](STATES.RESOLVED);
-      };
-      this.reject = (reason, ...args) => {
-        if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
-          reason.name = ERRORS.ExecutorInitializationError;
-        }
-
-        reject(reason, ...args);
-        this[ø.finalize](STATES.REJECTED);
-      };
+      this[ø.resolve] = resolve;
+      this[ø.reject] = reject;
     });
 
     if (timeout instanceof Timeout) {
@@ -87,6 +79,20 @@ class Executor {
         // log.debug('Rejected inside constructor', reason);
       }
     });
+  }
+
+  resolve(...args) {
+    this[ø.resolve](...args);
+    this[ø.finalize](STATES.RESOLVED);
+  }
+
+  reject(reason, ...args) {
+    if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
+      reason.name = ERRORS.ExecutorInitializationError;
+    }
+
+    this[ø.reject](reason, ...args);
+    this[ø.finalize](STATES.REJECTED);
   }
 
   /**

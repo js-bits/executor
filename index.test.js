@@ -156,7 +156,7 @@ describe(`Executor: ${env}`, () => {
         expect.assertions(2);
         executor.reject(new Error('Some error'));
         return executor.get().catch(error => {
-          expect(error.name).toEqual('ExecutorInitializationError');
+          expect(error.name).toEqual(Executor.ExecutorInitializationError);
           expect(error.message).toEqual('Some error');
         });
       });
@@ -221,7 +221,7 @@ describe(`Executor: ${env}`, () => {
 
       ex.$execute();
       return ex.get().catch(error => {
-        expect(error.name).toEqual('ExecutorInitializationError');
+        expect(error.name).toEqual(Executor.ExecutorInitializationError);
         expect(error.message).toEqual('.$execute() method must be implemented');
       });
     });
