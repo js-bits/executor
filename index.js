@@ -2,6 +2,12 @@ import enumerate from '@js-bits/enumerate';
 import Timeout from '@js-bits/timeout';
 import performance from '@js-bits/performance';
 
+// pseudo-private properties emulation in order to avoid source code transpiling
+// TODO: replace with #privateField syntax when it gains wide support
+const ø = enumerate`
+  finalize
+`;
+
 const STATES = {
   // we can also add CREATED:'created' if necessary
   EXECUTED: 'executed',
@@ -46,7 +52,7 @@ const Executor = function (options) {
   this.$promise = new Promise((resolve, reject) => {
     this.resolve = (...args) => {
       resolve(...args);
-      this.$finalize(STATES.RESOLVED);
+      this[ø.finalize](STATES.RESOLVED);
     };
     this.reject = (reason, ...args) => {
       if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
@@ -54,7 +60,7 @@ const Executor = function (options) {
       }
 
       reject(reason, ...args);
-      this.$finalize(STATES.REJECTED);
+      this[ø.finalize](STATES.REJECTED);
     };
   });
 
@@ -116,7 +122,7 @@ Executor.prototype = {
    * @param {string} state - 'executed', 'resolved' or 'rejected'
    * @returns {void}
    */
-  $finalize(state) {
+  [ø.finalize](state) {
     if (this.timeout) this.timeout.clear();
     this.$setTiming(state);
   },
