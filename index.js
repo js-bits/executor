@@ -23,8 +23,6 @@ const ERRORS = enumerate(String)`
  * @param {Object} options - input parameters
  */
 const Executor = function (options) {
-  const $this = this;
-
   /**
    * @private
    */
@@ -46,13 +44,11 @@ const Executor = function (options) {
    * @private
    */
   this.$promise = new Promise((resolve, reject) => {
-    $this.resolve = function (...args) {
+    this.resolve = (...args) => {
       resolve(...args);
-
-      // "this" here is a ref to derived class instance, where "_this" is a ref to Executor instance
       this.$finalize(STATES.RESOLVED);
     };
-    $this.reject = function (reason, ...args) {
+    this.reject = (reason, ...args) => {
       if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
         reason.name = ERRORS.ExecutorInitializationError;
       }
@@ -75,7 +71,7 @@ const Executor = function (options) {
   // to prevent log messages or breakpoints in browser console. The reason of the rejection
   // can be caught (or will throw an error if not caught) later when .get() method is invoked.
   this.$promise.catch(reason => {
-    if (!$this.timings[STATES.EXECUTED]) {
+    if (!this.timings[STATES.EXECUTED]) {
       // log.debug('Rejected inside constructor', reason);
     }
   });
