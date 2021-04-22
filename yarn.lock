@@ -571,10 +571,10 @@
   resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-0.0.3.tgz#22278e4d1e393acb90dfc08686c2102953f48bfc"
   integrity sha512-A6n4hid7/sOBOndJV2XdOcPik04BrdTmXzK28IX22wq+nuFV6aBCwh/aEte4UlLDRPSj7WbLREE2DYbISiDD3Q==
 
-"@js-bits/timeout@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.0.3.tgz#845a568c484c3cba6666e4ba5d246e3f2f8d98ce"
-  integrity sha512-/I+sYg4Eu/9FS3HnfwPxaiHKm2RIU14Q0u45U9v/US1Rfad7Bgsqqji03t6T/BeXmT8XIM6yQ+MTk79QEHzJ/w==
+"@js-bits/timeout@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.1.0.tgz#1ef0fb04ad33c75142be7550bb5e4c2b1d555360"
+  integrity sha512-8WO4rNUOfaR5aErXBYLt+KkvyegycQMtVKMv/86q62ZifcNTHoTm8RlnPc19XX1Yl4rf7fJfZYviTxKfQlMoTA==
   dependencies:
     "@js-bits/enumerate" "^0.1.2"
 

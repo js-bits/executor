@@ -88,15 +88,15 @@ describe(`Executor: ${env}`, () => {
     });
 
     describe('when a timeout is specified', () => {
-      test('should start the timeout', () => {
+      test('should set the timeout', () => {
         executor = new TestExecutor({
           timeout: 100,
         });
-        executor.timeout.start = jest.fn();
+        executor.timeout.set = jest.fn();
         executor.get();
         executor.get();
         executor.get();
-        expect(executor.timeout.start).toHaveBeenCalledTimes(1);
+        expect(executor.timeout.set).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -139,13 +139,13 @@ describe(`Executor: ${env}`, () => {
     });
 
     describe('when a timeout is specified', () => {
-      test('should stop the timeout', () => {
+      test('should clear the timeout', () => {
         executor = new TestExecutor({
           timeout: 100,
         });
-        executor.timeout.stop = jest.fn();
+        executor.timeout.clear = jest.fn();
         executor.resolve();
-        expect(executor.timeout.stop).toHaveBeenCalledTimes(1);
+        expect(executor.timeout.clear).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -202,13 +202,13 @@ describe(`Executor: ${env}`, () => {
     });
 
     describe('when a timeout is specified', () => {
-      test('should stop the timeout', () => {
+      test('should clear the timeout', () => {
         executor = new TestExecutor({
           timeout: 100,
         });
-        executor.timeout.stop = jest.fn();
+        executor.timeout.clear = jest.fn();
         executor.reject(new Error());
-        expect(executor.timeout.stop).toHaveBeenCalledTimes(1);
+        expect(executor.timeout.clear).toHaveBeenCalledTimes(1);
       });
     });
   });

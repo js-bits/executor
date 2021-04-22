@@ -86,7 +86,7 @@ Executor.prototype = {
     if (!this.timings[STATES.EXECUTED] && !this.timings[STATES.RESOLVED] && !this.timings[STATES.REJECTED]) {
       this.$execute(...args);
       this.$setTiming(STATES.EXECUTED);
-      if (this.timeout) this.timeout.start();
+      if (this.timeout) this.timeout.set();
     }
 
     return this.$promise;
@@ -117,7 +117,7 @@ Executor.prototype = {
    * @returns {void}
    */
   $finalize(state) {
-    if (this.timeout) this.timeout.stop();
+    if (this.timeout) this.timeout.clear();
     this.$setTiming(state);
   },
 };
