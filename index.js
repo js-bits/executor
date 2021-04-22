@@ -5,6 +5,7 @@ import performance from '@js-bits/performance';
 // pseudo-private properties emulation in order to avoid source code transpiling
 // TODO: replace with #privateField syntax when it gains wide support
 const ø = enumerate`
+  setTiming
   finalize
 `;
 
@@ -91,7 +92,7 @@ Executor.prototype = {
   get(...args) {
     if (!this.timings[STATES.EXECUTED] && !this.timings[STATES.RESOLVED] && !this.timings[STATES.REJECTED]) {
       this.$execute(...args);
-      this.$setTiming(STATES.EXECUTED);
+      this[ø.setTiming](STATES.EXECUTED);
       if (this.timeout) this.timeout.set();
     }
 
@@ -113,7 +114,7 @@ Executor.prototype = {
    * @param {string} state - 'executed', 'resolved' or 'rejected'
    * @returns {void}
    */
-  $setTiming(state) {
+  [ø.setTiming](state) {
     this.timings[state] = Math.round(performance.now()); // milliseconds
   },
 
@@ -124,7 +125,7 @@ Executor.prototype = {
    */
   [ø.finalize](state) {
     if (this.timeout) this.timeout.clear();
-    this.$setTiming(state);
+    this[ø.setTiming](state);
   },
 };
 
