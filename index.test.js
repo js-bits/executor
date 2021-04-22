@@ -152,11 +152,11 @@ describe(`Executor: ${env}`, () => {
 
   describe('#reject', () => {
     describe("when haven't been executed", () => {
-      test('should reject the promise with BaseReceiverInitializationError', async () => {
+      test('should reject the promise with ExecutorInitializationError', async () => {
         expect.assertions(2);
         executor.reject(new Error('Some error'));
         return executor.get().catch(error => {
-          expect(error.name).toEqual('BaseReceiverInitializationError');
+          expect(error.name).toEqual('ExecutorInitializationError');
           expect(error.message).toEqual('Some error');
         });
       });
@@ -221,7 +221,7 @@ describe(`Executor: ${env}`, () => {
 
       ex.$execute();
       return ex.get().catch(error => {
-        expect(error.name).toEqual('BaseReceiverInitializationError');
+        expect(error.name).toEqual('ExecutorInitializationError');
         expect(error.message).toEqual('.$execute() method must be implemented');
       });
     });

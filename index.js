@@ -1,3 +1,4 @@
+import enumerate from '@js-bits/enumerate';
 import Timeout from '@js-bits/timeout';
 import performance from '@js-bits/performance';
 
@@ -9,9 +10,9 @@ const STATES = {
   // SETTLED // either 'resolved' or 'rejected'
 };
 
-const ERRORS = {
-  INITIALIZATION: 'BaseReceiverInitializationError',
-};
+const ERRORS = enumerate(String)`
+  ExecutorInitializationError
+`;
 
 /**
  * Base class for any Executor extends Promise functionality.
@@ -53,7 +54,7 @@ const Executor = function (options) {
     };
     $this.reject = function (reason, ...args) {
       if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
-        reason.name = ERRORS.INITIALIZATION;
+        reason.name = ERRORS.ExecutorInitializationError;
       }
 
       reject(reason, ...args);
@@ -126,6 +127,6 @@ Executor.prototype = {
 };
 
 Executor.STATES = STATES;
-Executor.ERRORS = ERRORS;
+Object.assign(Executor, ERRORS);
 
 export default Executor;
