@@ -22,7 +22,6 @@ const STATES = enumerate`
 `;
 
 const { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED } = STATES;
-// SETTLED // either 'resolved' or 'rejected'
 
 const ERRORS = enumerate(String)`
   ExecutorInitializationError
@@ -52,8 +51,8 @@ class Executor {
     this.timings = timings;
 
     // make sure all timings are reset
-    Object.keys(timings).forEach(name => {
-      timings[name] = undefined;
+    Object.values(STATES).forEach(state => {
+      timings[state] = undefined;
     });
 
     /**
@@ -73,6 +72,8 @@ class Executor {
       this.timeout = new Timeout(timeout);
       this.timeout.catch(this.reject.bind(this));
     }
+
+    this[ø.setTiming](CREATED);
 
     // We need to catch a situation when promise gets immediately rejected inside constructor
     // to prevent log messages or breakpoints in browser console. The reason of the rejection

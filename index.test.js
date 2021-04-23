@@ -8,7 +8,7 @@ import Executor from './index.js';
 const env = cyan(`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`);
 
 const {
-  STATES: { EXECUTED, RESOLVED, REJECTED, SETTLED },
+  STATES: { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED },
 } = Executor;
 
 describe(`Executor: ${env}`, () => {
@@ -35,18 +35,20 @@ describe(`Executor: ${env}`, () => {
         expect(executor.timings).toBe(timings);
       });
 
-      test('should reset all properties of the passed object', () => {
+      test('should reset state properties of the passed object', () => {
         const timings = {
-          prop1: 1,
-          prop2: 2,
+          [EXECUTED]: 1,
+          [RESOLVED]: 2,
+          [REJECTED]: 3,
+          [SETTLED]: 4,
         };
         executor = new TestExecutor({
           timings,
         });
-        expect(executor.timings).toEqual({
-          prop1: undefined,
-          prop2: undefined,
-        });
+        expect(executor.timings[EXECUTED]).toBeUndefined();
+        expect(executor.timings[RESOLVED]).toBeUndefined();
+        expect(executor.timings[REJECTED]).toBeUndefined();
+        expect(executor.timings[SETTLED]).toBeUndefined();
       });
     });
 
@@ -69,6 +71,10 @@ describe(`Executor: ${env}`, () => {
           expect(executor.timeout).toBeInstanceOf(Timeout);
         });
       });
+    });
+
+    test('should set CREATED timing', () => {
+      expect(executor.timings[CREATED]).toBeGreaterThan(0);
     });
   });
 
