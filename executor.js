@@ -77,7 +77,7 @@ class Executor {
 
     // We need to catch a situation when promise gets immediately rejected inside constructor
     // to prevent log messages or breakpoints in browser console. The reason of the rejection
-    // can be caught (or will throw an error if not caught) later when .get() method is invoked.
+    // can be caught (or will throw an error if not caught) later when .do() method is invoked.
     this[ø.promise].catch(reason => {
       if (!this.timings[EXECUTED]) {
         // log.debug('Rejected inside constructor', reason);
@@ -103,9 +103,9 @@ class Executor {
    * Returns promise which will be resolved when data is received.
    * @returns {Promise} - a promise
    */
-  get(...args) {
+  do(...args) {
     if (!this.timings[EXECUTED] && !this.timings[SETTLED]) {
-      this.$execute(...args);
+      this.execute(...args);
       this[ø.setTiming](EXECUTED);
       if (this.timeout) this.timeout.set();
     }
@@ -114,12 +114,12 @@ class Executor {
   }
 
   /**
-   * Derived classes must implement .$execute() method performing corresponding action.
+   * Derived classes must implement .execute() method performing corresponding action.
    * @protected
    * @returns {void}
    */
-  $execute() {
-    this.reject(new Error('.$execute() method must be implemented'));
+  execute() {
+    this.reject(new Error('.execute() method must be implemented'));
   }
 
   /**

@@ -6,7 +6,7 @@ import Executor from './executor.js';
  */
 class Receiver extends Executor {
   // eslint-disable-next-line class-methods-use-this
-  $execute() {}
+  execute() {}
 }
 
 export default Receiver;
