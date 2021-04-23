@@ -7,6 +7,10 @@ import Executor from './index.js';
 
 const env = cyan(`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`);
 
+const {
+  STATES: { RESOLVED, REJECTED, EXECUTED },
+} = Executor;
+
 describe(`Executor: ${env}`, () => {
   let executor;
   let TestExecutor;
@@ -82,9 +86,9 @@ describe(`Executor: ${env}`, () => {
     });
 
     test('should set EXECUTED timing', () => {
-      expect(executor.timings.executed).toBeUndefined();
+      expect(executor.timings[EXECUTED]).toBeUndefined();
       executor.get();
-      expect(executor.timings.executed).toBeDefined();
+      expect(executor.timings[EXECUTED]).toBeDefined();
     });
 
     describe('when a timeout is specified', () => {
@@ -113,11 +117,11 @@ describe(`Executor: ${env}`, () => {
     describe("when haven't been executed", () => {
       test('should finalize with RESOLVED state', async () => {
         expect.assertions(3);
-        expect(executor.timings.resolved).toBeUndefined();
+        expect(executor.timings[RESOLVED]).toBeUndefined();
         executor.resolve();
         const promise = executor.get();
-        expect(executor.timings.resolved).toBeGreaterThan(0);
-        expect(executor.timings.executed).toBeUndefined();
+        expect(executor.timings[RESOLVED]).toBeGreaterThan(0);
+        expect(executor.timings[EXECUTED]).toBeUndefined();
         return promise.catch(() => {});
       });
     });
@@ -125,12 +129,12 @@ describe(`Executor: ${env}`, () => {
     describe('when have been executed', () => {
       test('should finalize with RESOLVED state', async () => {
         expect.assertions(4);
-        expect(executor.timings.resolved).toBeUndefined();
+        expect(executor.timings[RESOLVED]).toBeUndefined();
         const promise = executor.get();
         setTimeout(() => {
           executor.resolve();
-          expect(executor.timings.resolved).toBeGreaterThan(0);
-          const duration = executor.timings.resolved - executor.timings.executed;
+          expect(executor.timings[RESOLVED]).toBeGreaterThan(0);
+          const duration = executor.timings[RESOLVED] - executor.timings[EXECUTED];
           expect(duration).toBeGreaterThanOrEqual(80);
           expect(duration).toBeLessThanOrEqual(150);
         }, 100);
@@ -176,12 +180,12 @@ describe(`Executor: ${env}`, () => {
 
       test('should finalize with REJECTED state', async () => {
         expect.assertions(4);
-        expect(executor.timings.rejected).toBeUndefined();
+        expect(executor.timings[REJECTED]).toBeUndefined();
         const promise = executor.get();
         setTimeout(() => {
           executor.reject(new Error());
-          expect(executor.timings.rejected).toBeGreaterThan(0);
-          const duration = executor.timings.rejected - executor.timings.executed;
+          expect(executor.timings[REJECTED]).toBeGreaterThan(0);
+          const duration = executor.timings[REJECTED] - executor.timings[EXECUTED];
           expect(duration).toBeGreaterThanOrEqual(80);
           expect(duration).toBeLessThanOrEqual(150);
         }, 100);

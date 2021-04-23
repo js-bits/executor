@@ -13,13 +13,16 @@ const ø = enumerate`
   finalize
 `;
 
-const STATES = {
-  // we can also add CREATED:'created' if necessary
-  EXECUTED: 'executed',
-  RESOLVED: 'resolved',
-  REJECTED: 'rejected',
-  // SETTLED // either 'resolved' or 'rejected'
-};
+const STATES = enumerate`
+  CREATED
+  EXECUTED
+  RESOLVED
+  REJECTED
+  SETTLED
+`;
+
+const { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED } = STATES;
+// SETTLED // either 'resolved' or 'rejected'
 
 const ERRORS = enumerate(String)`
   ExecutorInitializationError
@@ -75,7 +78,7 @@ class Executor {
     // to prevent log messages or breakpoints in browser console. The reason of the rejection
     // can be caught (or will throw an error if not caught) later when .get() method is invoked.
     this[ø.promise].catch(reason => {
-      if (!this.timings[STATES.EXECUTED]) {
+      if (!this.timings[EXECUTED]) {
         // log.debug('Rejected inside constructor', reason);
       }
     });
@@ -83,16 +86,16 @@ class Executor {
 
   resolve(...args) {
     this[ø.resolve](...args);
-    this[ø.finalize](STATES.RESOLVED);
+    this[ø.finalize](RESOLVED);
   }
 
   reject(reason, ...args) {
-    if (!this.timings[STATES.EXECUTED] && reason.name === Error.prototype.name) {
+    if (!this.timings[EXECUTED] && reason.name === Error.prototype.name) {
       reason.name = ERRORS.ExecutorInitializationError;
     }
 
     this[ø.reject](reason, ...args);
-    this[ø.finalize](STATES.REJECTED);
+    this[ø.finalize](REJECTED);
   }
 
   /**
@@ -100,7 +103,7 @@ class Executor {
    * @returns {Promise} - a promise
    */
   get(...args) {
-    if (!this.timings[STATES.EXECUTED] && !this.timings[STATES.RESOLVED] && !this.timings[STATES.REJECTED]) {
+    if (!this.timings[EXECUTED] && !this.timings[RESOLVED] && !this.timings[REJECTED]) {
       this.$execute(...args);
       this[ø.setTiming](STATES.EXECUTED);
       if (this.timeout) this.timeout.set();
