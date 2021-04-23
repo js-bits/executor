@@ -1,12 +1,17 @@
 {
   "name": "@js-bits/executor",
   "version": "0.0.1",
-  "description": "Executor",
+  "description": "Abstract executor class",
   "keywords": [
     "javascript",
+    "abstract",
     "executor",
+    "pattern",
+    "receiver",
     "promise",
-    "timing"
+    "timing",
+    "latency",
+    "measurement"
   ],
   "type": "module",
   "module": "./index.js",
