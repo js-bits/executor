@@ -103,9 +103,9 @@ class Executor {
    * @returns {Promise} - a promise
    */
   get(...args) {
-    if (!this.timings[EXECUTED] && !this.timings[RESOLVED] && !this.timings[REJECTED]) {
+    if (!this.timings[EXECUTED] && !this.timings[SETTLED]) {
       this.$execute(...args);
-      this[ø.setTiming](STATES.EXECUTED);
+      this[ø.setTiming](EXECUTED);
       if (this.timeout) this.timeout.set();
     }
 
@@ -139,6 +139,7 @@ class Executor {
   [ø.finalize](state) {
     if (this.timeout) this.timeout.clear();
     this[ø.setTiming](state);
+    this[ø.setTiming](SETTLED);
   }
 }
 

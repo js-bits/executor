@@ -8,7 +8,7 @@ import Executor from './index.js';
 const env = cyan(`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`);
 
 const {
-  STATES: { RESOLVED, REJECTED, EXECUTED },
+  STATES: { EXECUTED, RESOLVED, REJECTED, SETTLED },
 } = Executor;
 
 describe(`Executor: ${env}`, () => {
@@ -116,11 +116,12 @@ describe(`Executor: ${env}`, () => {
 
     describe("when haven't been executed", () => {
       test('should finalize with RESOLVED state', async () => {
-        expect.assertions(3);
+        expect.assertions(4);
         expect(executor.timings[RESOLVED]).toBeUndefined();
         executor.resolve();
         const promise = executor.get();
         expect(executor.timings[RESOLVED]).toBeGreaterThan(0);
+        expect(executor.timings[RESOLVED]).toEqual(executor.timings[SETTLED]);
         expect(executor.timings[EXECUTED]).toBeUndefined();
         return promise.catch(() => {});
       });
@@ -128,12 +129,13 @@ describe(`Executor: ${env}`, () => {
 
     describe('when have been executed', () => {
       test('should finalize with RESOLVED state', async () => {
-        expect.assertions(4);
+        expect.assertions(5);
         expect(executor.timings[RESOLVED]).toBeUndefined();
         const promise = executor.get();
         setTimeout(() => {
           executor.resolve();
           expect(executor.timings[RESOLVED]).toBeGreaterThan(0);
+          expect(executor.timings[RESOLVED]).toEqual(executor.timings[SETTLED]);
           const duration = executor.timings[RESOLVED] - executor.timings[EXECUTED];
           expect(duration).toBeGreaterThanOrEqual(80);
           expect(duration).toBeLessThanOrEqual(150);
@@ -179,12 +181,13 @@ describe(`Executor: ${env}`, () => {
       });
 
       test('should finalize with REJECTED state', async () => {
-        expect.assertions(4);
+        expect.assertions(5);
         expect(executor.timings[REJECTED]).toBeUndefined();
         const promise = executor.get();
         setTimeout(() => {
           executor.reject(new Error());
           expect(executor.timings[REJECTED]).toBeGreaterThan(0);
+          expect(executor.timings[REJECTED]).toEqual(executor.timings[SETTLED]);
           const duration = executor.timings[REJECTED] - executor.timings[EXECUTED];
           expect(duration).toBeGreaterThanOrEqual(80);
           expect(duration).toBeLessThanOrEqual(150);
