@@ -528,15 +528,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@js-bits/enumerate@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-0.1.2.tgz#9bf93208520e379efb7919deca69b8fce8c25c80"
-  integrity sha512-zGngkr0GuhE42/SjZZbOd96RFE6jDI54sOO0wvpvc/S9AMP2BeIFcnbYSBjs0+iiBuvmsomnREcbelUczH8e/g==
-
-"@js-bits/enumerate@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-0.2.1.tgz#0737d50b53962a458a5fba57fecdb73ac7715512"
-  integrity sha512-qD1Ci2pWXEvrnZjrCX2+o+pG6i3TDCRqbgiXKgSrpjFkAT8UbeR5LQUEk/dbzBIMW08Fga5MrYEgaoJRk8le0g==
+"@js-bits/enumerate@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-0.3.0.tgz#2547d7dee6baecd452a33de1e406418351962023"
+  integrity sha512-maK5a3i2xheEKTzCHssv1kCYVbHTovmZxGGGgBQv11V5GmrrgwbDjtCHu9xGCTLbVXATu5uQ24enlnlQPnjYOg==
 
 "@js-bits/eslint-config@^0.0.2":
   version "0.0.2"
@@ -571,12 +566,12 @@
   resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-0.0.3.tgz#22278e4d1e393acb90dfc08686c2102953f48bfc"
   integrity sha512-A6n4hid7/sOBOndJV2XdOcPik04BrdTmXzK28IX22wq+nuFV6aBCwh/aEte4UlLDRPSj7WbLREE2DYbISiDD3Q==
 
-"@js-bits/timeout@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.1.0.tgz#1ef0fb04ad33c75142be7550bb5e4c2b1d555360"
-  integrity sha512-8WO4rNUOfaR5aErXBYLt+KkvyegycQMtVKMv/86q62ZifcNTHoTm8RlnPc19XX1Yl4rf7fJfZYviTxKfQlMoTA==
+"@js-bits/timeout@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.1.2.tgz#b3a25ac2ccc12b1b980803c8a2bd5100408eb5b0"
+  integrity sha512-BIUbzKV8/v2Wvcg/DwS26gWNnqFdOMbVUvhp2KvQflmkv9a8HC1XAfx78GZ/KvZKuRCFFwnw1ieQq91RBtRG0w==
   dependencies:
-    "@js-bits/enumerate" "^0.1.2"
+    "@js-bits/enumerate" "^0.3.0"
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
