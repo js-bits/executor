@@ -6,7 +6,7 @@ import performance from '@js-bits/performance';
 // TODO: replace with #privateField syntax when it gains wide support
 const ø = enumerate`
   options
-  promise
+  executor
   resolve
   reject
   setTiming
@@ -27,6 +27,10 @@ const ERRORS = enumerate(String)`
   ExecutorInitializationError
 `;
 
+// https://stackoverflow.com/questions/6598945/detect-if-function-is-native-to-browser
+const isNativeFunction = func =>
+  typeof func === 'function' && /\{\s+\[native code\]/.test(Function.prototype.toString.call(func));
+
 /**
  * Base class for any Executor extends Promise functionality.
  * Executor is a class of objects which can perform some simple action
@@ -35,12 +39,26 @@ const ERRORS = enumerate(String)`
  * @class
  * @param {Object} options - input parameters
  */
-class Executor {
-  constructor(options = {}) {
-    /**
-     * @private
-     */
+class Executor extends Promise {
+  constructor(...args) {
+    const lastArg = args[args.length - 1];
+    if (isNativeFunction(lastArg)) {
+      // internal promise call
+      // eslint-disable-next-line constructor-super
+      return super(lastArg);
+    }
+
+    let resolve;
+    let reject;
+    super((...funcs) => {
+      [resolve, reject] = funcs;
+    });
+    this[ø.resolve] = resolve;
+    this[ø.reject] = reject;
+
+    const [executor, options = {}] = args;
     this[ø.options] = options;
+    this[ø.executor] = executor;
 
     const { timings = {}, timeout } = options;
 
@@ -53,15 +71,6 @@ class Executor {
     // make sure all timings are reset
     Object.values(STATES).forEach(state => {
       timings[state] = undefined;
-    });
-
-    /**
-     * Internal promise
-     * @private
-     */
-    this[ø.promise] = new Promise((resolve, reject) => {
-      this[ø.resolve] = resolve;
-      this[ø.reject] = reject;
     });
 
     if (timeout instanceof Timeout) {
@@ -78,11 +87,16 @@ class Executor {
     // We need to catch a situation when promise gets immediately rejected inside constructor
     // to prevent log messages or breakpoints in browser console. The reason of the rejection
     // can be caught (or will throw an error if not caught) later when .do() method is invoked.
-    this[ø.promise].catch(reason => {
+    this.catch(reason => {
       if (!this.timings[EXECUTED]) {
         // log.debug('Rejected inside constructor', reason);
       }
     });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get [Symbol.toStringTag]() {
+    return 'Executor';
   }
 
   resolve(...args) {
@@ -103,23 +117,14 @@ class Executor {
    * Returns promise which will be resolved when data is received.
    * @returns {Promise} - a promise
    */
-  do(...args) {
+  execute(...args) {
     if (!this.timings[EXECUTED] && !this.timings[SETTLED]) {
-      this.execute(...args);
+      this[ø.executor](...args);
       this[ø.setTiming](EXECUTED);
       if (this.timeout) this.timeout.set();
     }
 
-    return this[ø.promise];
-  }
-
-  /**
-   * Derived classes must implement .execute() method performing corresponding action.
-   * @protected
-   * @returns {void}
-   */
-  execute() {
-    this.reject(new Error('.execute() method must be implemented'));
+    return this;
   }
 
   /**
@@ -140,7 +145,7 @@ class Executor {
   [ø.finalize](state) {
     if (this.timeout) this.timeout.clear();
     this[ø.setTiming](state);
-    this[ø.setTiming](SETTLED);
+    this.timings[SETTLED] = this.timings[state];
   }
 }
 

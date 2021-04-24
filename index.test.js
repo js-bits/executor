@@ -12,13 +12,14 @@ const {
 } = Executor;
 
 describe(`Executor: ${env}`, () => {
+  let executorFunc;
   let executor;
   let TestExecutor;
   beforeEach(() => {
+    executorFunc = jest.fn();
     class ExtExecutor extends Executor {
       constructor(...arg) {
-        super(...arg);
-        this.execute = jest.fn();
+        super(executorFunc, ...arg);
       }
     }
     TestExecutor = ExtExecutor;
@@ -26,6 +27,11 @@ describe(`Executor: ${env}`, () => {
   });
 
   describe('#constructor', () => {
+    test('should create an instance of TestExecutor', () => {
+      expect(executor).toBeInstanceOf(TestExecutor);
+      expect(executor).toBeInstanceOf(Promise);
+      expect(String(executor)).toEqual('[object Executor]');
+    });
     describe('when an external timings object is passed', () => {
       test('should use the passed object', () => {
         const timings = {};
@@ -80,20 +86,20 @@ describe(`Executor: ${env}`, () => {
 
   describe('#do', () => {
     test('should return a promise', () => {
-      expect(executor.do()).toBeInstanceOf(Promise);
+      expect(executor.execute()).toBeInstanceOf(Promise);
     });
 
     test('should call execute method once', () => {
-      executor.do(1, 'str', true);
-      executor.do(1234);
-      executor.do();
-      expect(executor.execute).toHaveBeenCalledTimes(1);
-      expect(executor.execute).toHaveBeenCalledWith(1, 'str', true);
+      executor.execute(1, 'str', true);
+      executor.execute(1234);
+      executor.execute();
+      expect(executorFunc).toHaveBeenCalledTimes(1);
+      expect(executorFunc).toHaveBeenCalledWith(1, 'str', true);
     });
 
     test('should set EXECUTED timing', () => {
       expect(executor.timings[EXECUTED]).toBeUndefined();
-      executor.do();
+      executor.execute();
       expect(executor.timings[EXECUTED]).toBeDefined();
     });
 
@@ -103,9 +109,9 @@ describe(`Executor: ${env}`, () => {
           timeout: 100,
         });
         executor.timeout.set = jest.fn();
-        executor.do();
-        executor.do();
-        executor.do();
+        executor.execute();
+        executor.execute();
+        executor.execute();
         expect(executor.timeout.set).toHaveBeenCalledTimes(1);
       });
     });
@@ -115,7 +121,7 @@ describe(`Executor: ${env}`, () => {
     test('should resolve the promise with the first passed argument', async () => {
       expect.assertions(1);
       executor.resolve(123, 'str', true);
-      return executor.do().then((...args) => {
+      return executor.execute().then((...args) => {
         expect(args).toEqual([123]);
       });
     });
@@ -125,7 +131,7 @@ describe(`Executor: ${env}`, () => {
         expect.assertions(4);
         expect(executor.timings[RESOLVED]).toBeUndefined();
         executor.resolve();
-        const promise = executor.do();
+        const promise = executor.execute();
         expect(executor.timings[RESOLVED]).toBeGreaterThan(0);
         expect(executor.timings[RESOLVED]).toEqual(executor.timings[SETTLED]);
         expect(executor.timings[EXECUTED]).toBeUndefined();
@@ -137,7 +143,7 @@ describe(`Executor: ${env}`, () => {
       test('should finalize with RESOLVED state', async () => {
         expect.assertions(5);
         expect(executor.timings[RESOLVED]).toBeUndefined();
-        const promise = executor.do();
+        const promise = executor.execute();
         setTimeout(() => {
           executor.resolve();
           expect(executor.timings[RESOLVED]).toBeGreaterThan(0);
@@ -167,7 +173,7 @@ describe(`Executor: ${env}`, () => {
       test('should reject the promise with ExecutorInitializationError', async () => {
         expect.assertions(2);
         executor.reject(new Error('Some error'));
-        return executor.do().catch(error => {
+        return executor.execute().catch(error => {
           expect(error.name).toEqual(Executor.ExecutorInitializationError);
           expect(error.message).toEqual('Some error');
         });
@@ -179,7 +185,7 @@ describe(`Executor: ${env}`, () => {
           const error = new Error('Some error');
           error.name = 'CustomError';
           executor.reject(error);
-          return executor.do().catch(reason => {
+          return executor.execute().catch(reason => {
             expect(reason.name).toEqual('CustomError');
             expect(reason.message).toEqual('Some error');
           });
@@ -189,7 +195,7 @@ describe(`Executor: ${env}`, () => {
       test('should finalize with REJECTED state', async () => {
         expect.assertions(5);
         expect(executor.timings[REJECTED]).toBeUndefined();
-        const promise = executor.do();
+        const promise = executor.execute();
         setTimeout(() => {
           executor.reject(new Error());
           expect(executor.timings[REJECTED]).toBeGreaterThan(0);
@@ -205,7 +211,7 @@ describe(`Executor: ${env}`, () => {
     describe('when haven been executed', () => {
       test('should reject the promise with passed error', async () => {
         expect.assertions(2);
-        const promise = executor.do();
+        const promise = executor.execute();
         executor.reject(new Error('Some error'));
         return promise.catch(error => {
           expect(error.name).toEqual('Error');
@@ -227,13 +233,13 @@ describe(`Executor: ${env}`, () => {
   });
 
   describe('#execute', () => {
-    test('should reject the promise when execute is not implemented in a derived class', async () => {
+    test.skip('should reject the promise when execute is not implemented in a derived class', async () => {
       expect.assertions(2);
       class ExtExecutor extends Executor {}
       const ex = new ExtExecutor();
 
       ex.execute();
-      return ex.do().catch(error => {
+      return ex.execute().catch(error => {
         expect(error.name).toEqual(Executor.ExecutorInitializationError);
         expect(error.message).toEqual('.execute() method must be implemented');
       });

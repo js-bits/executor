@@ -5,14 +5,15 @@ import Executor from './executor.js';
  * (and also registers internal timings)
  */
 class Receiver extends Executor {
-  // eslint-disable-next-line class-methods-use-this
-  execute() {}
+  constructor(options) {
+    super(() => {}, options);
+  }
 
   /**
-   * Alias of {@link Executor#do} method
+   * An alias of {@link Executor#execute} method
    */
-  wait(...args) {
-    return this.do(...args);
+  async wait(...args) {
+    return this.execute(...args);
   }
 }
 
