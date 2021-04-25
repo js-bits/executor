@@ -528,10 +528,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@js-bits/enumerate@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-0.3.0.tgz#2547d7dee6baecd452a33de1e406418351962023"
-  integrity sha512-maK5a3i2xheEKTzCHssv1kCYVbHTovmZxGGGgBQv11V5GmrrgwbDjtCHu9xGCTLbVXATu5uQ24enlnlQPnjYOg==
+"@js-bits/enumerate@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-0.4.0.tgz#6e5af7f909522e47380cc22e71f268598346dd8d"
+  integrity sha512-kEXnNGc0coECcU/+t1Qr08wG8hI9qXw2dpxdu8aH4dr9KUoQ9DFMl4QlCQBeezvkmvLivyONh3zjl6U8WfcBiw==
 
 "@js-bits/eslint-config@^0.0.2":
   version "0.0.2"
@@ -566,12 +566,20 @@
   resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-0.0.3.tgz#22278e4d1e393acb90dfc08686c2102953f48bfc"
   integrity sha512-A6n4hid7/sOBOndJV2XdOcPik04BrdTmXzK28IX22wq+nuFV6aBCwh/aEte4UlLDRPSj7WbLREE2DYbISiDD3Q==
 
-"@js-bits/timeout@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.1.2.tgz#b3a25ac2ccc12b1b980803c8a2bd5100408eb5b0"
-  integrity sha512-BIUbzKV8/v2Wvcg/DwS26gWNnqFdOMbVUvhp2KvQflmkv9a8HC1XAfx78GZ/KvZKuRCFFwnw1ieQq91RBtRG0w==
+"@js-bits/timeout@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.1.3.tgz#403814f176526d47e5e04f1a358009a9c7901c91"
+  integrity sha512-N6Z1ZjjqLh5QYsAZncuev6igjfMl+le4deU0G9atmZb0xUdTkQIpS1MUDLEnKmmUno3oDW3pQL3OSoC346O4pQ==
   dependencies:
-    "@js-bits/enumerate" "^0.3.0"
+    "@js-bits/enumerate" "^0.4.0"
+    "@js-bits/xpromise" "^0.0.2"
+
+"@js-bits/xpromise@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-0.0.2.tgz#532af52146692cb9d2ded9f2c83fac482fc01022"
+  integrity sha512-rFohmsPEmE851G2aRFczCKflf4jBsW1YZHW0F99Kev0174YjS+uYGPlJzBu5WBqmxxwNpiIrui0e01tC/N964g==
+  dependencies:
+    "@js-bits/enumerate" "^0.4.0"
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
