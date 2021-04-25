@@ -3,7 +3,7 @@
 import { jest } from '@jest/globals';
 import { cyan } from '@js-bits/log-in-color';
 import Timeout from '@js-bits/timeout';
-import Executor from './index.js';
+import Executor from './executor.js';
 
 const env = cyan(`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`);
 
