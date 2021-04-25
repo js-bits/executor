@@ -3,7 +3,7 @@
 An abstract executor is similar to a promise with two major differences:
 
 - Asynchronous operation that ties an outcome to a promise is decoupled from resolve/reject functions
-- Built-in execution time monitoring
+- Built-in monitoring of execution time
 
 The package also includes a basic executor implementation called `Receiver`.
 
