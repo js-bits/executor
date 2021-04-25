@@ -1,4 +1,5 @@
 import enumerate from '@js-bits/enumerate';
+import ExtendablePromise from '@js-bits/xpromise';
 import Timeout from '@js-bits/timeout';
 import performance from '@js-bits/performance';
 
@@ -6,9 +7,6 @@ import performance from '@js-bits/performance';
 // TODO: replace with #privateField syntax when it gains wide support
 const ø = enumerate`
   options
-  executor
-  resolve
-  reject
   setTiming
   finalize
 `;
@@ -27,10 +25,6 @@ const ERRORS = enumerate(String)`
   ExecutorInitializationError
 `;
 
-// https://stackoverflow.com/questions/6598945/detect-if-function-is-native-to-browser
-const isNativeFunction = func =>
-  typeof func === 'function' && /\{\s+\[native code\]/.test(Function.prototype.toString.call(func));
-
 /**
  * Base class for any Executor extends Promise functionality.
  * Executor is a class of objects which can perform some simple action
@@ -39,26 +33,10 @@ const isNativeFunction = func =>
  * @class
  * @param {Object} options - input parameters
  */
-class Executor extends Promise {
-  constructor(...args) {
-    const lastArg = args[args.length - 1];
-    if (isNativeFunction(lastArg)) {
-      // internal promise call
-      // eslint-disable-next-line constructor-super
-      return super(lastArg);
-    }
-
-    let resolve;
-    let reject;
-    super((...funcs) => {
-      [resolve, reject] = funcs;
-    });
-    this[ø.resolve] = resolve;
-    this[ø.reject] = reject;
-
-    const [executor, options = {}] = args;
+class Executor extends ExtendablePromise {
+  constructor(executor, options = {}) {
+    super(executor);
     this[ø.options] = options;
-    this[ø.executor] = executor;
 
     const { timings = {}, timeout } = options;
 
@@ -100,7 +78,7 @@ class Executor extends Promise {
   }
 
   resolve(...args) {
-    this[ø.resolve](...args);
+    super.resolve(...args);
     this[ø.finalize](RESOLVED);
   }
 
@@ -109,7 +87,7 @@ class Executor extends Promise {
       reason.name = ERRORS.ExecutorInitializationError;
     }
 
-    this[ø.reject](reason, ...args);
+    super.reject(reason, ...args);
     this[ø.finalize](REJECTED);
   }
 
@@ -119,7 +97,7 @@ class Executor extends Promise {
    */
   execute(...args) {
     if (!this.timings[EXECUTED] && !this.timings[SETTLED]) {
-      this[ø.executor](...args);
+      super.execute(...args);
       this[ø.setTiming](EXECUTED);
       if (this.timeout) this.timeout.set();
     }

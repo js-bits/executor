@@ -84,7 +84,7 @@ describe(`Executor: ${env}`, () => {
     });
   });
 
-  describe('#do', () => {
+  describe('#execute', () => {
     test('should return a promise', () => {
       expect(executor.execute()).toBeInstanceOf(Promise);
     });
@@ -94,7 +94,7 @@ describe(`Executor: ${env}`, () => {
       executor.execute(1234);
       executor.execute();
       expect(executorFunc).toHaveBeenCalledTimes(1);
-      expect(executorFunc).toHaveBeenCalledWith(1, 'str', true);
+      expect(executorFunc).toHaveBeenCalledWith(expect.any(Function), expect.any(Function), 1, 'str', true);
     });
 
     test('should set EXECUTED timing', () => {
