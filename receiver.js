@@ -5,15 +5,9 @@ import Executor from './executor.js';
  * (and also registers internal timings)
  */
 class Receiver extends Executor {
-  constructor(options) {
-    super(() => {}, options);
-  }
-
-  /**
-   * An alias of {@link Executor#execute} method
-   */
-  async wait(...args) {
-    return this.execute(...args);
+  constructor(...args) {
+    super(() => {}, ...args);
+    this.execute();
   }
 }
 
