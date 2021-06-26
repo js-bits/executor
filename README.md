@@ -1,11 +1,13 @@
-# Abstract executor
+# Abstract Executor class
 
-An abstract executor is similar to a promise with two major differences:
+`Executor` is a class derived from `Promise` and it has similar behavior but with one major difference: asynchronous operation that ties an outcome to a promise is decoupled from the constructor.
 
-- Asynchronous operation that ties an outcome to a promise is decoupled from resolve/reject functions
+`Executor` also has two useful features:
+
 - Built-in monitoring of execution time
+- Optional rejection by a specified timeout
 
-The package also includes a basic executor implementation called `Receiver`.
+The package additionally includes a simple executor implementation called `Receiver`.
 
 ## Installation
 
@@ -29,25 +31,38 @@ import Executor, { Receiver } from '@js-bits/executor';
 
 ## How to use
 
-Since `Executor` is an abstract class it is not possible to use it directly. In order to be able to create executor instances you have to create a derived class implementing `.execute()` method. The method basically defines what an executor actually does and what should be its outcome.
+Since asynchronous operation is decoupled it won't be executed automatically when a new `Executor` gets created. Instead you have to call `.execute()` method explicitly.
 
 ```javascript
-class AsyncOperation extends Executor {
-  async execute() {
-    // perform some asynchronous actions
-    // ...
-    // and resolve the promise when it's completed
-    this.resolve(result);
-  }
-}
-
-const asyncOp = new AsyncOperation();
-// ...
-asyncOp.execute();
-// ...
-asyncOp.then(result => {
-  // handle the result
+const asyncOperation = new Executor((resolve, reject) => {
+  // perform some asynchronous actions
+  // ...
+  // and resolve the promise when the operation is completed
+  resolve(123);
 });
+// ...
+asyncOperation.execute();
+// ...
+asyncOperation.then(result => {
+  // handle the result
+  console.log('result', result); // 123
+});
+```
+
+## Receiver
+
+`Receiver` does not accept any executor function which means it doesn't perform any actions by itself. `Receiver` can be used to asynchronously assign a value to a variable.
+
+```javascript
+(async () => {
+  const someAsyncValue = new Receiver();
+
+  setTimeout(() => {
+    someAsyncValue.resolve(234);
+  }, 1000);
+
+  console.log('result', await someAsyncValue); // 234
+})();
 ```
 
 ## Notes
