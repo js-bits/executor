@@ -51,7 +51,7 @@ asyncOperation.then(result => {
 
 ## Receiver
 
-`Receiver` does not accept any executor function which means it doesn't perform any actions by itself. `Receiver` can be used to asynchronously assign a value to a variable.
+`Receiver` does not accept any executor function which means it doesn't perform any actions by itself. `Receiver` can be used to asynchronously assign a value to some variable or indicate some event.
 
 ```javascript
 (async () => {
