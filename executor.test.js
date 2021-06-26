@@ -29,6 +29,7 @@ describe(`Executor: ${env}`, () => {
   describe('#constructor', () => {
     test('should create an instance of TestExecutor', () => {
       expect(executor).toBeInstanceOf(TestExecutor);
+      expect(executor).toBeInstanceOf(Executor);
       expect(executor).toBeInstanceOf(Promise);
       expect(String(executor)).toEqual('[object Executor]');
     });
@@ -89,7 +90,7 @@ describe(`Executor: ${env}`, () => {
       expect(executor.execute()).toBeInstanceOf(Promise);
     });
 
-    test('should call execute method once', () => {
+    test('should call executor function only once', () => {
       executor.execute(1, 'str', true);
       executor.execute(1234);
       executor.execute();
@@ -101,6 +102,7 @@ describe(`Executor: ${env}`, () => {
       expect(executor.timings[EXECUTED]).toBeUndefined();
       executor.execute();
       expect(executor.timings[EXECUTED]).toBeDefined();
+      expect(executor.timings[EXECUTED]).toBeGreaterThanOrEqual(executor.timings[CREATED]);
     });
 
     describe('when a timeout is specified', () => {
@@ -113,6 +115,19 @@ describe(`Executor: ${env}`, () => {
         executor.execute();
         executor.execute();
         expect(executor.timeout.set).toHaveBeenCalledTimes(1);
+      });
+
+      describe('when timeout has exceeded', () => {
+        test('should reject the promise with TimeoutExceededError error', async () => {
+          expect.assertions(2);
+          executor = new TestExecutor({
+            timeout: 100,
+          });
+          return executor.execute().catch(reason => {
+            expect(reason.name).toEqual('TimeoutExceededError');
+            expect(reason.message).toEqual('Operation timeout exceeded');
+          });
+        });
       });
     });
   });
@@ -150,7 +165,7 @@ describe(`Executor: ${env}`, () => {
           expect(executor.timings[RESOLVED]).toEqual(executor.timings[SETTLED]);
           const duration = executor.timings[RESOLVED] - executor.timings[EXECUTED];
           expect(duration).toBeGreaterThanOrEqual(80);
-          expect(duration).toBeLessThanOrEqual(150);
+          expect(duration).toBeLessThanOrEqual(200);
         }, 100);
         return promise.catch(() => {});
       });
@@ -202,7 +217,7 @@ describe(`Executor: ${env}`, () => {
           expect(executor.timings[REJECTED]).toEqual(executor.timings[SETTLED]);
           const duration = executor.timings[REJECTED] - executor.timings[EXECUTED];
           expect(duration).toBeGreaterThanOrEqual(80);
-          expect(duration).toBeLessThanOrEqual(150);
+          expect(duration).toBeLessThanOrEqual(200);
         }, 100);
         return promise.catch(() => {});
       });
@@ -228,20 +243,6 @@ describe(`Executor: ${env}`, () => {
         executor.timeout.clear = jest.fn();
         executor.reject(new Error());
         expect(executor.timeout.clear).toHaveBeenCalledTimes(1);
-      });
-    });
-  });
-
-  describe('#execute', () => {
-    test.skip('should reject the promise when execute is not implemented in a derived class', async () => {
-      expect.assertions(2);
-      class ExtExecutor extends Executor {}
-      const ex = new ExtExecutor();
-
-      ex.execute();
-      return ex.execute().catch(error => {
-        expect(error.name).toEqual(Executor.ExecutorInitializationError);
-        expect(error.message).toEqual('.execute() method must be implemented');
       });
     });
   });
