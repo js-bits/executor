@@ -59,7 +59,7 @@ There are five metrics available any time through `timings` property:
 - `REJECTED`
 - `SETTLED` (equals to either `RESOLVED` or `REJECTED`)
 
-Use `Executor.STATES` static enum property in order to to access them.
+Use `Executor.STATES` static enum property in order to access them.
 
 ```javascript
 // create a new class of Executor
@@ -91,6 +91,41 @@ const { CREATED, EXECUTED, RESOLVED } = DOMReadyReceiver.STATES;
   console.log(`DOMReadyReceiver created in ${domReady.timings[CREATED] / 1000} s`); // DOMReadyReceiver created in 0.629 s
   console.log(`${isDomReady ? 'DOM ready' : 'DOMContentLoaded'} in ${domReady.timings[RESOLVED] / 1000} s`); // DOMContentLoaded in 0.644 s
   console.log(`Delay: ${domReady.timings[RESOLVED] - domReady.timings[EXECUTED]} ms`); // Delay: 15 ms
+})();
+```
+
+## Timeout
+
+You can use optional `timeout` parameter to set maximum allowable execution time for the asynchronous operation.
+
+```javascript
+class AsyncOpExecutor extends Executor {
+  constructor(...args) {
+    super((resolve, reject) => {
+      setTimeout(() => {
+        resolve(); // resolve the operation in about 1 second
+      }, 1000);
+    }, ...args);
+  }
+}
+
+const asyncOperation = new AsyncOpExecutor({
+  timeout: 100, // set timeout to 100 ms
+});
+
+(async () => {
+  const { EXECUTED, RESOLVED, SETTLED } = AsyncOpExecutor.STATES;
+
+  asyncOperation.execute();
+  try {
+    await asyncOperation;
+    console.log(`resolved in ${(asyncOperation.timings[RESOLVED] - asyncOperation.timings[EXECUTED]) / 1000} s`);
+  } catch (reason) {
+    // TimeoutExceededError: Operation timeout exceeded
+    if (reason.name === 'TimeoutExceededError') {
+      console.log(`Timed out in ${asyncOperation.timings[SETTLED] - asyncOperation.timings[EXECUTED]} ms`); // Timed out in 104 ms
+    }
+  }
 })();
 ```
 
