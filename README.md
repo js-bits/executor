@@ -49,19 +49,66 @@ asyncOperation.then(result => {
 });
 ```
 
+## Execution timings
+
+There are five metrics available any time through `timings` property:
+
+- `CREATED`
+- `EXECUTED`
+- `RESOLVED`
+- `REJECTED`
+- `SETTLED` (equals to either `RESOLVED` or `REJECTED`)
+
+Use `Executor.STATES` static enum property in order to to access them.
+
+```javascript
+// create a new class of Executor
+class DOMReadyReceiver extends Executor {
+  constructor(...args) {
+    super((resolve, reject) => {
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        resolve(true);
+      } else {
+        window.addEventListener('DOMContentLoaded', () => {
+          resolve(false);
+        });
+      }
+    }, ...args);
+    this.execute(); // let's execute it right away for the sake of demo
+  }
+}
+
+// create local state constants for convenience
+const { CREATED, EXECUTED, RESOLVED } = DOMReadyReceiver.STATES;
+
+(async () => {
+  // create an instance of the class to be able to handle DOM Ready event
+  const domReady = new DOMReadyReceiver();
+  // wait for it to be resolved
+  const isDomReady = await domReady;
+
+  // check execution metrics
+  console.log(`DOMReadyReceiver created in ${domReady.timings[CREATED] / 1000} s`); // DOMReadyReceiver created in 0.629 s
+  console.log(`${isDomReady ? 'DOM ready' : 'DOMContentLoaded'} in ${domReady.timings[RESOLVED] / 1000} s`); // DOMContentLoaded in 0.644 s
+  console.log(`Delay: ${domReady.timings[RESOLVED] - domReady.timings[EXECUTED]} ms`); // Delay: 15 ms
+})();
+```
+
 ## Receiver
 
 `Receiver` does not accept any executor function which means it doesn't perform any actions by itself. `Receiver` can be used to asynchronously assign a value to some variable or indicate some event.
 
 ```javascript
-(async () => {
-  const someAsyncValue = new Receiver();
+const someAsyncValue = new Receiver();
+const { EXECUTED, RESOLVED } = Receiver.STATES;
 
+(async () => {
   setTimeout(() => {
-    someAsyncValue.resolve(234);
+    someAsyncValue.resolve(123);
   }, 1000);
 
-  console.log('result', await someAsyncValue); // 234
+  console.log(`Received value: ${await someAsyncValue}`); // Received value: 123
+  console.log(`It took ${someAsyncValue.timings[RESOLVED] - someAsyncValue.timings[EXECUTED]} ms to receive the value`); // It took 1005 ms to receive the value
 })();
 ```
 
