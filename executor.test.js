@@ -245,4 +245,53 @@ describe(`Executor: ${env}`, () => {
       });
     });
   });
+
+  describe('resolve/reject binding', () => {
+    test('resolve', async () => {
+      expect.assertions(3);
+      const resolveFunc = jest.fn();
+      class ResolvedPromise extends Executor {
+        constructor(...args) {
+          super((resolve, reject) => {
+            resolve(true);
+          }, ...args);
+          this.execute();
+        }
+
+        resolve(...args) {
+          resolveFunc(...args);
+          super.resolve(...args);
+        }
+      }
+      const resolvedPromise = new ResolvedPromise();
+      return resolvedPromise.then(result => {
+        expect(result).toEqual(true);
+        expect(resolveFunc).toHaveBeenCalledWith(true);
+        expect(resolveFunc).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    test('reject', async () => {
+      expect.assertions(2);
+      const rejectFunc = jest.fn();
+      class RejectedPromise extends Executor {
+        constructor(...args) {
+          super((resolve, reject) => {
+            reject(new Error('Rejected Promise'));
+          }, ...args);
+          this.execute();
+        }
+
+        reject(...args) {
+          rejectFunc(...args);
+          super.reject(...args);
+        }
+      }
+      const rejectedPromise = new RejectedPromise();
+      return rejectedPromise.catch(reason => {
+        expect(reason.message).toEqual('Rejected Promise');
+        expect(rejectFunc).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
 });
