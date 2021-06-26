@@ -80,6 +80,7 @@ class Executor extends ExtendablePromise {
   resolve(...args) {
     super.resolve(...args);
     this[ø.finalize](RESOLVED);
+    // return this; // don't do this
   }
 
   reject(reason, ...args) {
@@ -89,6 +90,9 @@ class Executor extends ExtendablePromise {
 
     super.reject(reason, ...args);
     this[ø.finalize](REJECTED);
+    // returning anything can lead to a subsequent exceptions
+    // for cases like promise.catch(executor.reject.bind(executor))
+    // return this; // don't do this
   }
 
   /**
