@@ -41,10 +41,11 @@ const asyncOperation = new Executor((resolve, reject) => {
   resolve(123);
 });
 // ...
+// execute the operation where necessary
 asyncOperation.execute();
 // ...
+// handle the result
 asyncOperation.then(result => {
-  // handle the result
   console.log('result', result); // 123
 });
 ```
@@ -119,7 +120,7 @@ const asyncOperation = new AsyncOpExecutor({
   asyncOperation.execute();
   try {
     await asyncOperation;
-    console.log(`resolved in ${(asyncOperation.timings[RESOLVED] - asyncOperation.timings[EXECUTED]) / 1000} s`);
+    console.log(`Resolved in ${(asyncOperation.timings[RESOLVED] - asyncOperation.timings[EXECUTED]) / 1000} s`);
   } catch (reason) {
     // TimeoutExceededError: Operation timeout exceeded
     if (reason.name === 'TimeoutExceededError') {
