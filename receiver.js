@@ -7,7 +7,12 @@ import Executor from './executor.js';
 class Receiver extends Executor {
   constructor(...args) {
     super(() => {}, ...args);
+  }
+
+  then(...args) {
+    // execute when the result first gets accessed
     this.execute();
+    return super.then(...args);
   }
 }
 

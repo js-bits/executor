@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-// import { performance } from 'perf_hooks';
 import { jest } from '@jest/globals';
 import { cyan } from '@js-bits/log-in-color';
 import Timeout from '@js-bits/timeout';
