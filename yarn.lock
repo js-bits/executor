@@ -581,10 +581,10 @@
   dependencies:
     "@js-bits/enumerate" "^0.4.0"
 
-"@js-bits/xpromise@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-0.1.1.tgz#2fd81c1cd25edc2f23710c083178d25a32654848"
-  integrity sha512-uDCrjiN6E5e5PJ0eJHVHytTKHgGfh9N5M2+hj6N7+r+vmGsEw5F01t8YLC4ebudxocbpg65OQyCr1VQUW5nwVw==
+"@js-bits/xpromise@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-0.1.2.tgz#9c8995178f97c123daeedf87ecacf7b535c52107"
+  integrity sha512-fKSOxoUpj3VwglDh9lpAMDq0nSGDiOPkSZqPhUfJxNG9IhZTddbDdm/cl55lN1lN/kVjWiaL9bCL2bw/wcKrtQ==
   dependencies:
     "@js-bits/enumerate" "^0.4.0"
 
