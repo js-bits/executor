@@ -117,14 +117,39 @@ describe(`Executor: ${env}`, () => {
       });
 
       describe('when timeout has exceeded', () => {
-        test('should reject the promise with TimeoutExceededError error', async () => {
-          expect.assertions(2);
-          executor = new TestExecutor({
-            timeout: 100,
+        describe('when hard timeout', () => {
+          test('should reject the promise with TimeoutExceededError error', async () => {
+            expect.assertions(2);
+            executor = new TestExecutor({
+              timeout: 100,
+            });
+            return executor.execute().catch(reason => {
+              expect(reason.name).toEqual('TimeoutExceededError');
+              expect(reason.message).toEqual('Operation timeout exceeded');
+            });
           });
-          return executor.execute().catch(reason => {
-            expect(reason.name).toEqual('TimeoutExceededError');
-            expect(reason.message).toEqual('Operation timeout exceeded');
+        });
+
+        describe('when soft timeout', () => {
+          test('should reject the timeout promise with TimeoutExceededError error', async () => {
+            expect.assertions(3);
+            const timeout = new Timeout(100);
+            executor = new TestExecutor({
+              timeout,
+            });
+
+            setTimeout(() => {
+              executor.resolve('success');
+            }, 1000);
+
+            timeout.catch(reason => {
+              expect(reason.name).toEqual('TimeoutExceededError');
+              expect(reason.message).toEqual('Operation timeout exceeded');
+            });
+
+            return executor.execute().then(result => {
+              expect(result).toEqual('success');
+            });
           });
         });
       });
