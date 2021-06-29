@@ -1,2 +1,2 @@
-export { default } from './executor.js';
-export { default as Receiver } from './receiver.js';
+export { default } from './src/executor.js';
+export { default as Receiver } from './src/receiver.js';

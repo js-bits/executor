@@ -3,7 +3,7 @@ import { cyan } from '@js-bits/log-in-color';
 import Executor from './executor.js';
 import Receiver from './receiver.js';
 
-const env = cyan(`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`);
+const env = cyan`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`;
 
 const {
   STATES: { CREATED, EXECUTED, RESOLVED, SETTLED },

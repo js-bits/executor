@@ -30,7 +30,7 @@
   "license": "ISC",
   "devDependencies": {
     "@js-bits/formalinter": "^0.1.2",
-    "@js-bits/log-in-color": "^0.0.2",
+    "@js-bits/log-in-color": "^0.1.0",
     "@types/jest": "^26.0.22",
     "jest": "^26.6.3"
   },
