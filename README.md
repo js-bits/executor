@@ -102,22 +102,19 @@ You can use optional `timeout` parameter to set maximum allowable execution time
 <b>Hard timeout</b>. An executor will be automatically rejected when a specified timeout is exceeded. It can be set by an integer number passed as a value of `timeout` parameter.
 
 ```javascript
-class AsyncOpExecutor extends Executor {
-  constructor(...args) {
-    super((resolve, reject) => {
-      setTimeout(() => {
-        resolve(); // resolve the operation in about 1 second
-      }, 1000);
-    }, ...args);
+const asyncOperation = new Executor(
+  (resolve, reject) => {
+    setTimeout(() => {
+      resolve(); // resolve the operation in about 1 second
+    }, 1000);
+  },
+  {
+    timeout: 100, // set timeout to 100 ms
   }
-}
-
-const asyncOperation = new AsyncOpExecutor({
-  timeout: 100, // set timeout to 100 ms
-});
+);
 
 (async () => {
-  const { EXECUTED, RESOLVED, SETTLED } = AsyncOpExecutor.STATES;
+  const { EXECUTED, RESOLVED, SETTLED } = Executor.STATES;
 
   asyncOperation.execute();
   try {
@@ -137,19 +134,16 @@ const asyncOperation = new AsyncOpExecutor({
 ```javascript
 import Timeout from '@js-bits/timeout';
 
-class AsyncOpExecutor extends Executor {
-  constructor(...args) {
-    super(resolve => {
-      setTimeout(() => {
-        resolve('Success!!!'); // resolve the operation in about 1 second
-      }, 1000);
-    }, ...args);
+const asyncOperation = new Executor(
+  (resolve, reject) => {
+    setTimeout(() => {
+      resolve('Success!!!'); // resolve the operation in about 1 second
+    }, 1000);
+  },
+  {
+    timeout: new Timeout(100),
   }
-}
-
-const asyncOperation = new AsyncOpExecutor({
-  timeout: new Timeout(100),
-});
+);
 
 (async () => {
   asyncOperation.execute();
