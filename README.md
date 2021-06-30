@@ -178,5 +178,6 @@ const { EXECUTED, RESOLVED } = Receiver.STATES;
 
 ## Notes
 
+- [Loader](https://www.npmjs.com/package/@js-bits/loader) - an implementation of `Executor` for HTTP requests.
 - Requires [ECMAScript modules](https://nodejs.org/api/esm.html) to be enabled in Node.js environment. Otherwise, compile into a CommonJS module.
 - Does not include any polyfills, which means that Internet Explorer is not supported.
