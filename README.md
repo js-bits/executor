@@ -97,7 +97,9 @@ const { CREATED, EXECUTED, RESOLVED } = DOMReadyReceiver.STATES;
 
 ## Timeout
 
-You can use optional `timeout` parameter to set maximum allowable execution time for the asynchronous operation.
+You can use optional `timeout` parameter to set maximum allowable execution time for the asynchronous operation. There are 2 types of timeout supported:
+
+<b>Hard timeout</b>. An executor will be automatically rejected when a specified timeout is exceeded. It can be set by an integer number passed as a value of `timeout` parameter.
 
 ```javascript
 class AsyncOpExecutor extends Executor {
@@ -130,6 +132,38 @@ const asyncOperation = new AsyncOpExecutor({
 })();
 ```
 
+<b>Soft timeout</b>. Can be set by an [Timeout](https://www.npmjs.com/package/@js-bits/timeout) instance passed as a value of `timeout` parameter. The executor won't be rejected automatically. The timeout must be handled externally.
+
+```javascript
+import Timeout from '@js-bits/timeout';
+
+class AsyncOpExecutor extends Executor {
+  constructor(...args) {
+    super(resolve => {
+      setTimeout(() => {
+        resolve('Success!!!'); // resolve the operation in about 1 second
+      }, 1000);
+    }, ...args);
+  }
+}
+
+const asyncOperation = new AsyncOpExecutor({
+  timeout: new Timeout(100),
+});
+
+(async () => {
+  asyncOperation.execute();
+  asyncOperation.timeout.catch(reason => {
+    if (reason.name === Timeout.TimeoutExceededError) {
+      // you can report that operation has timed out
+      console.log(`Operation has exceeded specified timeout.`); // Operation has exceeded specified timeout.
+    }
+  });
+  // operation can still continue
+  console.log(await asyncOperation); // Success!!!
+})();
+```
+
 ## Receiver
 
 `Receiver` does not accept any executor function which means it doesn't perform any actions by itself. `Receiver` can be used to asynchronously assign a value to some variable or indicate some event.
@@ -150,4 +184,5 @@ const { EXECUTED, RESOLVED } = Receiver.STATES;
 
 ## Notes
 
-- Internet Explorer is not supported.
+- Requires [ECMAScript modules](https://nodejs.org/api/esm.html) to be enabled in Node.js environment. Otherwise, compile into a CommonJS module.
+- Does not include any polyfills, which means that Internet Explorer is not supported.
