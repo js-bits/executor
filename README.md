@@ -99,7 +99,7 @@ const { CREATED, EXECUTED, RESOLVED } = DOMReadyReceiver.STATES;
 
 You can use optional `timeout` parameter to set maximum allowable execution time for the asynchronous operation. There are 2 types of timeout supported:
 
-<b>Hard timeout</b>. An executor will be automatically rejected when a specified timeout is exceeded. It can be set by an integer number passed as a value of `timeout` parameter.
+<b>Hard timeout</b>. The executor will be automatically rejected when specified timeout is exceeded. It can be set by an integer number passed as a value of `timeout` parameter.
 
 ```javascript
 const asyncOperation = new Executor(
@@ -129,7 +129,7 @@ const asyncOperation = new Executor(
 })();
 ```
 
-<b>Soft timeout</b>. Can be set by an [Timeout](https://www.npmjs.com/package/@js-bits/timeout) instance passed as a value of `timeout` parameter. The executor won't be rejected automatically. The timeout must be handled externally.
+<b>Soft timeout</b>. Can be set by a [Timeout](https://www.npmjs.com/package/@js-bits/timeout) instance passed as a value of `timeout` parameter. The executor won't be rejected automatically. The timeout must be handled externally.
 
 ```javascript
 import Timeout from '@js-bits/timeout';
@@ -160,7 +160,7 @@ const asyncOperation = new Executor(
 
 ## Receiver
 
-`Receiver` does not accept any executor function which means it doesn't perform any actions by itself. `Receiver` can be used to asynchronously assign a value to some variable or indicate some event.
+`Receiver` does not accept any executor function which basically means that it doesn't perform any actions by itself. `Receiver` can be used to asynchronously assign a value to some variable or indicate some event.
 
 ```javascript
 const someAsyncValue = new Receiver();
