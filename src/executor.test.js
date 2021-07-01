@@ -1,16 +1,13 @@
 /* eslint-disable max-classes-per-file */
 import { jest } from '@jest/globals';
-import { cyan } from '@js-bits/log-in-color';
 import Timeout from '@js-bits/timeout';
 import Executor from './executor.js';
-
-const env = cyan`[${typeof window === 'undefined' ? 'node' : 'jsdom'}]`;
 
 const {
   STATES: { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED },
 } = Executor;
 
-describe(`Executor: ${env}`, () => {
+describe(`Executor`, () => {
   let executorFunc;
   let executor;
   let TestExecutor;
