@@ -26,13 +26,13 @@ yarn add @js-bits/executor
 Import where you need it:
 
 ```javascript
-import Executor, { Receiver } from '@js-bits/executor';
+import { Executor, Receiver } from '@js-bits/executor';
 ```
 
 or require for CommonJS:
 
 ```javascript
-const { default: Executor, Receiver } = require('@js-bits/executor');
+const { Executor, Receiver } = require('@js-bits/executor');
 ```
 
 ## How to use

@@ -159,5 +159,5 @@ class Receiver extends Executor {
   }
 }
 
+exports.Executor = Executor;
 exports.Receiver = Receiver;
-exports['default'] = Executor;

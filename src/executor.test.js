@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 import Timeout from '@js-bits/timeout';
 import Executor from './executor.js';
 // const Timeout = require('@js-bits/timeout');
-// const { default: Executor } = require('../dist/index.cjs');
+// const { Executor } = require('../dist/index.cjs');
 
 const {
   STATES: { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED },
