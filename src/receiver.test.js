@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import Executor from './executor.js';
 import Receiver from './receiver.js';
+// const { default: Executor, Receiver } = require('../dist/index.cjs');
 
 const {
   STATES: { CREATED, EXECUTED, RESOLVED, SETTLED },
