@@ -528,10 +528,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@js-bits/enumerate@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-0.4.0.tgz#6e5af7f909522e47380cc22e71f268598346dd8d"
-  integrity sha512-kEXnNGc0coECcU/+t1Qr08wG8hI9qXw2dpxdu8aH4dr9KUoQ9DFMl4QlCQBeezvkmvLivyONh3zjl6U8WfcBiw==
+"@js-bits/enumerate@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-0.5.1.tgz#d01e4821ace3af452bf971ac5ee289374d500bbb"
+  integrity sha512-Gy0iU91+YRmTXlgSL2HWmyclUQgGxdUBe+n1O4M8WGiefb72vki9PPPExdyuaGwxJuXYB17c0lRd8GyMrlViEA==
 
 "@js-bits/eslint-config@^0.0.2":
   version "0.0.2"
@@ -561,32 +561,25 @@
   resolved "https://registry.yarnpkg.com/@js-bits/log-in-color/-/log-in-color-0.1.0.tgz#328d99b6b89bf043efdc53e284f9b120de4941fa"
   integrity sha512-RKA+92TLus9z9ZZQCgyqmkf7O6xpEbGvXnmHLYiPC1R3+wN3Q5zqQ76aTP+HU+9wPQy4MZtgKP+qg13XmZ/UcQ==
 
-"@js-bits/performance@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-0.0.3.tgz#22278e4d1e393acb90dfc08686c2102953f48bfc"
-  integrity sha512-A6n4hid7/sOBOndJV2XdOcPik04BrdTmXzK28IX22wq+nuFV6aBCwh/aEte4UlLDRPSj7WbLREE2DYbISiDD3Q==
-
-"@js-bits/timeout@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.1.3.tgz#403814f176526d47e5e04f1a358009a9c7901c91"
-  integrity sha512-N6Z1ZjjqLh5QYsAZncuev6igjfMl+le4deU0G9atmZb0xUdTkQIpS1MUDLEnKmmUno3oDW3pQL3OSoC346O4pQ==
-  dependencies:
-    "@js-bits/enumerate" "^0.4.0"
-    "@js-bits/xpromise" "^0.0.2"
-
-"@js-bits/xpromise@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-0.0.2.tgz#532af52146692cb9d2ded9f2c83fac482fc01022"
-  integrity sha512-rFohmsPEmE851G2aRFczCKflf4jBsW1YZHW0F99Kev0174YjS+uYGPlJzBu5WBqmxxwNpiIrui0e01tC/N964g==
-  dependencies:
-    "@js-bits/enumerate" "^0.4.0"
-
-"@js-bits/xpromise@^0.1.2":
+"@js-bits/performance@^0.1.2":
   version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-0.1.2.tgz#9c8995178f97c123daeedf87ecacf7b535c52107"
-  integrity sha512-fKSOxoUpj3VwglDh9lpAMDq0nSGDiOPkSZqPhUfJxNG9IhZTddbDdm/cl55lN1lN/kVjWiaL9bCL2bw/wcKrtQ==
+  resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-0.1.2.tgz#1518c1cfebfd57adbc907d147dfcfb5d2875d943"
+  integrity sha512-ofdBLUwwiunc3rn2KKg3bly3cgrTMJmFjOwSbgz5SKlGNt9WYKz+SDS8E6ddIjVY3KJh786OoQLuwA1eLsS9Hw==
+
+"@js-bits/timeout@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-0.2.1.tgz#ac9f436e6fe6bccb9aaa154dae617d43a17fbf20"
+  integrity sha512-JTFZG75yUUSp6zKCCVW7RKfgH/2JzD28Ake6YCyxn6BhMXcKpd/Z0GmBnEg35MBRwpQ8b8rHFPFXfUFQTWlDyQ==
   dependencies:
-    "@js-bits/enumerate" "^0.4.0"
+    "@js-bits/enumerate" "^0.5.1"
+    "@js-bits/xpromise" "^0.2.1"
+
+"@js-bits/xpromise@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-0.2.1.tgz#688fa55478a888c08aeef598a71af9798c19b150"
+  integrity sha512-UR3iA5D1g6dRDr1X7hi9koLPIfpFh0poCV1fgQZZtcYbpGMjB930ggDP6mwqv3UdE8pDxWWnJPHXCM0uUEEieQ==
+  dependencies:
+    "@js-bits/enumerate" "^0.5.1"
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -1985,7 +1978,7 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
-fsevents@^2.1.2:
+fsevents@^2.1.2, fsevents@~2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
@@ -3902,6 +3895,13 @@ rimraf@^3.0.0, rimraf@^3.0.2:
   integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
   dependencies:
     glob "^7.1.3"
+
+rollup@^2.55.1:
+  version "2.55.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.55.1.tgz#66a444648e2fb603d8e329e77a61c608a6510fda"
+  integrity sha512-1P9w5fpb6b4qroePh8vHKGIvPNxwoCQhjJpIqfZGHLKpZ0xcU2/XBmFxFbc9697/6bmHpmFTLk5R1dAQhFSo0g==
+  optionalDependencies:
+    fsevents "~2.3.2"
 
 rsvp@^4.8.4:
   version "4.8.5"

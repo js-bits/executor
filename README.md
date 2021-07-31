@@ -29,6 +29,12 @@ Import where you need it:
 import Executor, { Receiver } from '@js-bits/executor';
 ```
 
+or require for CommonJS:
+
+```javascript
+const { default: Executor, Receiver } = require('@js-bits/executor');
+```
+
 ## How to use
 
 Since asynchronous operation is decoupled it won't be executed automatically when a new `Executor` gets created. Instead you have to call `.execute()` method explicitly.
@@ -179,5 +185,4 @@ const { EXECUTED, RESOLVED } = Receiver.STATES;
 ## Notes
 
 - [Loader](https://www.npmjs.com/package/@js-bits/loader) - an implementation of `Executor` for HTTP requests.
-- Requires [ECMAScript modules](https://nodejs.org/api/esm.html) to be enabled in Node.js environment. Otherwise, compile into a CommonJS module.
 - Does not include any polyfills, which means that Internet Explorer is not supported.
