@@ -159,7 +159,5 @@ class Receiver extends Executor {
   }
 }
 
-console.log(`executor import mode: ${typeof require === 'undefined' ? 'esm' : 'cjs'}`);
-
 exports.Receiver = Receiver;
 exports['default'] = Executor;
