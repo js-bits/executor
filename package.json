@@ -38,7 +38,7 @@
   "author": "https://github.com/apolo-gh",
   "license": "ISC",
   "devDependencies": {
-    "@js-bits/formalinter": "^0.1.2",
+    "@js-bits/formalinter": "^0.3.1",
     "@js-bits/log-in-color": "^0.1.0",
     "@types/jest": "^26.0.22",
     "husky": "^8.0.1",

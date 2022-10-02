@@ -16,13 +16,13 @@ var performance__default = /*#__PURE__*/_interopDefaultLegacy(performance);
 
 // pseudo-private properties emulation in order to avoid source code transpiling
 // TODO: replace with #privateField syntax when it gains wide support
-const ø = enumerate__default['default']`
+const ø = enumerate__default["default"]`
   options
   setTiming
   finalize
 `;
 
-const STATES = enumerate__default['default']`
+const STATES = enumerate__default["default"]`
   CREATED
   EXECUTED
   RESOLVED
@@ -32,7 +32,7 @@ const STATES = enumerate__default['default']`
 
 const { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED } = STATES;
 
-const ERRORS = enumerate__default['default'](String)`
+const ERRORS = enumerate__default["default"](String)`
   ExecutorInitializationError
 `;
 
@@ -44,7 +44,7 @@ const ERRORS = enumerate__default['default'](String)`
  * @class
  * @param {Object} options - input parameters
  */
-class Executor extends ExtendablePromise__default['default'] {
+class Executor extends ExtendablePromise__default["default"] {
   constructor(executor, options = {}) {
     super(executor);
     this[ø.options] = options;
@@ -62,12 +62,12 @@ class Executor extends ExtendablePromise__default['default'] {
       timings[state] = undefined;
     });
 
-    if (timeout instanceof Timeout__default['default']) {
+    if (timeout instanceof Timeout__default["default"]) {
       // soft timeout will be caught and processed externally
       this.timeout = timeout;
     } else if (timeout !== undefined) {
       // hard timeout (rejects the receiver if exceeded) or no timeout
-      this.timeout = new Timeout__default['default'](timeout);
+      this.timeout = new Timeout__default["default"](timeout);
       this.timeout.catch(this.reject.bind(this));
     }
 
@@ -125,7 +125,7 @@ class Executor extends ExtendablePromise__default['default'] {
    * @returns {void}
    */
   [ø.setTiming](state) {
-    this.timings[state] = Math.round(performance__default['default'].now()); // milliseconds
+    this.timings[state] = Math.round(performance__default["default"].now()); // milliseconds
   }
 
   /**
