@@ -70,7 +70,9 @@ class Executor extends ExtendablePromise__default["default"] {
     } else if (timeout !== undefined) {
       // hard timeout (rejects the receiver if exceeded) or no timeout
       this.timeout = new Timeout__default["default"](timeout);
-      this.timeout.catch(this.reject.bind(this));
+      this.timeout.catch(reason => {
+        this.reject(reason);
+      });
     }
 
     this[ø.setTiming](CREATED);
@@ -78,9 +80,11 @@ class Executor extends ExtendablePromise__default["default"] {
     // We need to catch a situation when promise gets immediately rejected inside constructor
     // to prevent log messages or breakpoints in browser console. The reason of the rejection
     // can be caught (or will throw an error if not caught) later when .execute() method is invoked.
-    this.catch(reason => {
-      if (!this.timings[EXECUTED]) ;
-    });
+    // this.catch(reason => {
+    //   if (!this.timings[EXECUTED]) {
+    //     // log.debug('Rejected inside constructor', reason);
+    //   }
+    // });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -89,21 +93,19 @@ class Executor extends ExtendablePromise__default["default"] {
   }
 
   resolve(...args) {
-    super.resolve(...args);
+    const result = super.resolve(...args);
     this[ø.finalize](RESOLVED);
-    // return this; // don't do this
+    return result;
   }
 
   reject(reason, ...args) {
-    if (!this.timings[EXECUTED] && reason && reason instanceof Error && reason.name === Error.prototype.name) {
-      reason.name = ERRORS.InitializationError;
-    }
+    // if (!this.timings[EXECUTED] && reason && reason instanceof Error && reason.name === Error.prototype.name) {
+    //   reason.name = ERRORS.InitializationError;
+    // }
 
-    super.reject(reason, ...args);
+    const result = super.reject(reason, ...args);
     this[ø.finalize](REJECTED);
-    // returning anything can lead to a subsequent exceptions
-    // for cases like promise.catch(executor.reject.bind(executor))
-    // return this; // don't do this
+    return result;
   }
 
   /**
@@ -158,6 +160,18 @@ class Receiver extends Executor {
     // execute when the result first gets accessed
     this.execute();
     return super.then(...args);
+  }
+
+  resolve(...args) {
+    // execute when the result first gets resolved
+    this.execute();
+    return super.resolve(...args);
+  }
+
+  reject(...args) {
+    // execute when the result first gets reject
+    this.execute();
+    return super.reject(...args);
   }
 }
 

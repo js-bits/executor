@@ -15,21 +15,67 @@ describe('Receiver', () => {
     expect(receiver).toBeInstanceOf(Promise);
   });
 
-  test('should execute immediately after it gets created', async () => {
-    expect.assertions(3);
-    const receiver = new Receiver();
-    setTimeout(() => {
-      receiver.resolve(123, 'str', true);
-    }, 100);
-    return receiver
-      .then((...args) => {
-        expect(args).toEqual([123]);
-        expect(receiver.timings[CREATED]).toEqual(receiver.timings[EXECUTED]);
-        return 'done';
-      })
-      .then(result => {
-        expect(result).toEqual('done');
+  describe('check executed', () => {
+    describe('when resolved before gets accessed', () => {
+      test('should execute only when resolved', done => {
+        expect.assertions(7);
+        const receiver = new Receiver();
+        setTimeout(() => {
+          receiver.resolve(123, 'str', true);
+          expect(receiver.timings[EXECUTED]).toBeGreaterThan(receiver.timings[CREATED]);
+          receiver
+            .then((...args) => {
+              expect(args).toEqual([123]);
+              expect(receiver.timings[EXECUTED]).toBeGreaterThan(receiver.timings[CREATED]);
+              return 'done';
+            })
+            .then(result => {
+              expect(result).toEqual('done');
+              done();
+            });
+        }, 100);
+        expect(receiver.timings[CREATED]).toBeGreaterThan(10);
+        expect(receiver.timings[CREATED]).toBeLessThan(2000);
+        expect(receiver.timings[EXECUTED]).toBeUndefined();
       });
+    });
+    describe('when rejected before gets accessed', () => {
+      test('should execute only when rejected', done => {
+        expect.assertions(4);
+        const receiver = new Receiver();
+        setTimeout(() => {
+          const promise = receiver.reject('async error');
+          expect(receiver.timings[EXECUTED]).toBeGreaterThan(receiver.timings[CREATED]);
+          promise
+            .then((...args) => {
+              expect(args).toEqual([123]);
+            })
+            .catch(reason => {
+              expect(reason).toEqual('async error');
+              done();
+            });
+        }, 100);
+        expect(receiver.timings[CREATED]).toBeGreaterThan(10);
+        expect(receiver.timings[EXECUTED]).toBeUndefined();
+      });
+    });
+    describe('when rejected after gets accessed', () => {
+      test('should execute only when accessed', done => {
+        expect.assertions(5);
+        const receiver = new Receiver();
+        setTimeout(() => {
+          receiver.reject('async error');
+        }, 100);
+        expect(receiver.timings[CREATED]).toBeGreaterThan(10);
+        expect(receiver.timings[EXECUTED]).toBeUndefined();
+        receiver.catch((...args) => {
+          expect(args).toEqual(['async error']);
+          expect(receiver.timings[EXECUTED]).toBeGreaterThanOrEqual(receiver.timings[CREATED]);
+          done();
+        });
+        expect(receiver.timings[EXECUTED]).toBeGreaterThanOrEqual(receiver.timings[CREATED]);
+      });
+    });
   });
 
   test('should finalize with RESOLVED state when resolved', async () => {
