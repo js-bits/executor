@@ -78,9 +78,11 @@ class Executor extends ExtendablePromise__default["default"] {
     // We need to catch a situation when promise gets immediately rejected inside constructor
     // to prevent log messages or breakpoints in browser console. The reason of the rejection
     // can be caught (or will throw an error if not caught) later when .execute() method is invoked.
-    this.catch(reason => {
-      if (!this.timings[EXECUTED]) ;
-    });
+    // this.catch(reason => {
+    //   if (!this.timings[EXECUTED]) {
+    //     // log.debug('Rejected inside constructor', reason);
+    //   }
+    // });
   }
 
   // eslint-disable-next-line class-methods-use-this

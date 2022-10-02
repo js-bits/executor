@@ -26,7 +26,6 @@
     "build": "rollup ./index.js --format cjs --file dist/index.cjs --exports named",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "test-cjs": "jest --verbose",
-    "test-coverage": "yarn test --coverage",
     "test-watch": "yarn test --watch",
     "lint": "eslint '**/*.{js,jsx}'",
     "prepare": "husky install"
