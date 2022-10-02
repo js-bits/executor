@@ -9,7 +9,7 @@ const {
   STATES: { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED },
 } = Executor;
 
-describe(`Executor`, () => {
+describe('Executor', () => {
   let executorFunc;
   let executor;
   let TestExecutor;

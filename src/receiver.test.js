@@ -7,7 +7,7 @@ const {
   STATES: { CREATED, EXECUTED, RESOLVED, SETTLED },
 } = Receiver;
 
-describe(`Receiver`, () => {
+describe('Receiver', () => {
   test('should create an instance', () => {
     const receiver = new Receiver();
     expect(receiver).toBeInstanceOf(Receiver);
