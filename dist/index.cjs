@@ -14,6 +14,8 @@ var ExtendablePromise__default = /*#__PURE__*/_interopDefaultLegacy(ExtendablePr
 var Timeout__default = /*#__PURE__*/_interopDefaultLegacy(Timeout);
 var performance__default = /*#__PURE__*/_interopDefaultLegacy(performance);
 
+const { Prefix } = enumerate__default["default"];
+
 // pseudo-private properties emulation in order to avoid source code transpiling
 // TODO: replace with #privateField syntax when it gains wide support
 const ø = enumerate__default["default"]`
@@ -32,8 +34,8 @@ const STATES = enumerate__default["default"]`
 
 const { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED } = STATES;
 
-const ERRORS = enumerate__default["default"](String)`
-  ExecutorInitializationError
+const ERRORS = enumerate__default["default"](Prefix('Executor|'))`
+  InitializationError
 `;
 
 /**

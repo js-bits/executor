@@ -54,10 +54,10 @@
     "extends": "@js-bits/eslint-config/.eslintrc.json"
   },
   "dependencies": {
-    "@js-bits/enumerate": "^0.5.1",
+    "@js-bits/enumerate": "^0.8.0",
     "@js-bits/performance": "^0.1.2",
     "@js-bits/timeout": "^0.2.1",
-    "@js-bits/xpromise": "^0.2.1"
+    "@js-bits/xpromise": "^0.2.2"
   },
   "jest": {
     "projects": [

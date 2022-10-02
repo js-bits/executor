@@ -713,7 +713,7 @@
     "@js-bits/enumerate" "^0.5.1"
     "@js-bits/xpromise" "^0.2.1"
 
-"@js-bits/xpromise@^0.2.1":
+"@js-bits/xpromise@^0.2.1", "@js-bits/xpromise@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-0.2.2.tgz#551ebdc7fadeca602032ffdc22a661e18768fe00"
   integrity sha512-cDN86dvytgX3ZENjtFIoldKSFvvrOhsrDSVRrXH7h4hvmVMkYSNTf+GK+9C7JEpHQ+hGEqRxSSTTAzivRex5Ow==
