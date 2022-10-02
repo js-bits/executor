@@ -156,7 +156,7 @@ const asyncOperation = new Executor(
   asyncOperation.timeout.catch(reason => {
     if (reason.name === Timeout.TimeoutExceededError) {
       // you can report that operation has timed out
-      console.log(`Operation has exceeded specified timeout.`); // Operation has exceeded specified timeout.
+      console.log('Operation has exceeded specified timeout.'); // Operation has exceeded specified timeout.
     }
   });
   // operation can still continue
