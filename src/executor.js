@@ -3,6 +3,8 @@ import ExtendablePromise from '@js-bits/xpromise';
 import Timeout from '@js-bits/timeout';
 import performance from '@js-bits/performance';
 
+const { Prefix } = enumerate;
+
 // pseudo-private properties emulation in order to avoid source code transpiling
 // TODO: replace with #privateField syntax when it gains wide support
 const ø = enumerate`
@@ -21,8 +23,8 @@ const STATES = enumerate`
 
 const { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED } = STATES;
 
-const ERRORS = enumerate(String)`
-  ExecutorInitializationError
+const ERRORS = enumerate(Prefix('Executor|'))`
+  InitializationError
 `;
 
 /**
@@ -85,7 +87,7 @@ class Executor extends ExtendablePromise {
 
   reject(reason, ...args) {
     if (!this.timings[EXECUTED] && reason && reason instanceof Error && reason.name === Error.prototype.name) {
-      reason.name = ERRORS.ExecutorInitializationError;
+      reason.name = ERRORS.InitializationError;
     }
 
     super.reject(reason, ...args);

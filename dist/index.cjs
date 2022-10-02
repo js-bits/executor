@@ -96,7 +96,7 @@ class Executor extends ExtendablePromise__default["default"] {
 
   reject(reason, ...args) {
     if (!this.timings[EXECUTED] && reason && reason instanceof Error && reason.name === Error.prototype.name) {
-      reason.name = ERRORS.ExecutorInitializationError;
+      reason.name = ERRORS.InitializationError;
     }
 
     super.reject(reason, ...args);

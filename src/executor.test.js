@@ -208,11 +208,11 @@ describe('Executor', () => {
 
   describe('#reject', () => {
     describe("when haven't been executed", () => {
-      test('should reject the promise with ExecutorInitializationError', async () => {
+      test('should reject the promise with InitializationError', async () => {
         expect.assertions(2);
         executor.reject(new Error('Some error'));
         return executor.execute().catch(error => {
-          expect(error.name).toEqual(Executor.ExecutorInitializationError);
+          expect(error.name).toEqual(Executor.InitializationError);
           expect(error.message).toEqual('Some error');
         });
       });
