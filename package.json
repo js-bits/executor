@@ -56,7 +56,7 @@
     "@js-bits/enumerate": "^0.8.0",
     "@js-bits/performance": "^0.1.2",
     "@js-bits/timeout": "^0.2.1",
-    "@js-bits/xpromise": "^0.2.1"
+    "@js-bits/xpromise": "^0.3.0"
   },
   "jest": {
     "projects": [

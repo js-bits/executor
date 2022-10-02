@@ -720,6 +720,13 @@
   dependencies:
     "@js-bits/enumerate" "^0.8.0"
 
+"@js-bits/xpromise@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-0.3.0.tgz#f962399e663136fd8d4ef12e6b872aa1505d342a"
+  integrity sha512-b8skrAj4FbupOqWZcLidXqQB9jwgmc3FOZthPpqrv+cGk+BuDeK1OquftIEltDdRnExdYQO8pfao1o2TFA06jA==
+  dependencies:
+    "@js-bits/enumerate" "^0.8.0"
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz#dbf733a965ca47b1973177dc0bb6c889edcfb129"
