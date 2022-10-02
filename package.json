@@ -29,9 +29,7 @@
     "test-coverage": "yarn test --coverage",
     "test-watch": "yarn test --watch",
     "lint": "eslint '**/*.{js,jsx}'",
-    "husky:pre-commit": "npx husky add .husky/pre-commit \"yarn build\" && npx husky add .husky/pre-commit \"git add dist/**.*\" && git add .husky/pre-commit",
-    "husky:pre-push": "npx husky add .husky/pre-push \"yarn lint\" && npx husky add .husky/pre-push \"yarn test\" && git add .husky/pre-push",
-    "husky:init": "npx husky install && yarn husky:pre-commit && yarn husky:pre-push"
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -43,7 +41,7 @@
     "@js-bits/formalinter": "^0.1.2",
     "@js-bits/log-in-color": "^0.1.0",
     "@types/jest": "^26.0.22",
-    "husky": "^7.0.1",
+    "husky": "^8.0.1",
     "jest": "^26.6.3",
     "rollup": "^2.55.1"
   },
