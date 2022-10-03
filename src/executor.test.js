@@ -81,6 +81,49 @@ describe('Executor', () => {
     test('should set CREATED timing', () => {
       expect(executor.timings[CREATED]).toBeGreaterThan(0);
     });
+
+    describe('when extended', () => {
+      describe('when rejected in a constructor', () => {
+        test('should throw an async error', async () => {
+          expect.assertions(3);
+          class MyPromise extends Executor {
+            constructor() {
+              super((resolve, reject) => {
+                reject('async error');
+              });
+              this.execute();
+            }
+          }
+          let promise;
+          let result = 'unchanged';
+          try {
+            promise = new MyPromise();
+            result = await promise;
+          } catch (error) {
+            expect(error).toEqual('async error');
+          }
+          expect(promise).toEqual(expect.any(Executor));
+          expect(result).toEqual('unchanged');
+        });
+      });
+      describe('when resolved in a constructor', () => {
+        test('should return resolved value', async () => {
+          expect.assertions(2);
+          class MyPromise extends Executor {
+            constructor() {
+              super(resolve => {
+                resolve('async value');
+              });
+              this.execute();
+            }
+          }
+          const promise = new MyPromise();
+          const result = await promise;
+          expect(promise).toEqual(expect.any(Executor));
+          expect(result).toEqual('async value');
+        });
+      });
+    });
   });
 
   describe('#execute', () => {
@@ -164,6 +207,10 @@ describe('Executor', () => {
       });
     });
 
+    test('should return an executor', () => {
+      expect(executor.resolve(123)).toBe(executor);
+    });
+
     describe("when haven't been executed", () => {
       test('should finalize with RESOLVED state', async () => {
         expect.assertions(4);
@@ -208,12 +255,21 @@ describe('Executor', () => {
 
   describe('#reject', () => {
     describe("when haven't been executed", () => {
-      test('should reject the promise with InitializationError', async () => {
-        expect.assertions(2);
+      test('should reject the promise', async () => {
+        expect.assertions(3);
         executor.reject(new Error('Some error'));
         return executor.execute().catch(error => {
-          expect(error.name).toEqual(Executor.InitializationError);
+          expect(error.name).toEqual('Error');
           expect(error.message).toEqual('Some error');
+          expect(executor.timings[EXECUTED]).toBeUndefined();
+        });
+      });
+
+      test('should return an executor', async () => {
+        expect.assertions(2);
+        expect(executor.reject('async error')).toBe(executor);
+        executor.catch(error => {
+          expect(error).toEqual('async error');
         });
       });
 
@@ -235,7 +291,7 @@ describe('Executor', () => {
         expect(executor.timings[REJECTED]).toBeUndefined();
         const promise = executor.execute();
         setTimeout(() => {
-          executor.reject(new Error());
+          executor.reject(new Error('Rejected error'));
           expect(executor.timings[REJECTED]).toBeGreaterThan(0);
           expect(executor.timings[REJECTED]).toEqual(executor.timings[SETTLED]);
           const duration = executor.timings[REJECTED] - executor.timings[EXECUTED];
@@ -259,13 +315,15 @@ describe('Executor', () => {
     });
 
     describe('when a timeout is specified', () => {
-      test('should clear the timeout', () => {
+      test('should clear the timeout', async () => {
+        expect.assertions(1);
         executor = new TestExecutor({
           timeout: 100,
         });
         executor.timeout.clear = jest.fn();
-        executor.reject(new Error());
+        executor.reject(new Error('Rejected with timeout'));
         expect(executor.timeout.clear).toHaveBeenCalledTimes(1);
+        return executor.catch(() => {});
       });
     });
   });

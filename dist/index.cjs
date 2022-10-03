@@ -70,21 +70,10 @@ class Executor extends ExtendablePromise__default["default"] {
     } else if (timeout !== undefined) {
       // hard timeout (rejects the receiver if exceeded) or no timeout
       this.timeout = new Timeout__default["default"](timeout);
-      this.timeout.catch(reason => {
-        this.reject(reason);
-      });
+      this.timeout.catch(this.reject.bind(this)).catch(() => {});
     }
 
     this[ø.setTiming](CREATED);
-
-    // We need to catch a situation when promise gets immediately rejected inside constructor
-    // to prevent log messages or breakpoints in browser console. The reason of the rejection
-    // can be caught (or will throw an error if not caught) later when .execute() method is invoked.
-    // this.catch(reason => {
-    //   if (!this.timings[EXECUTED]) {
-    //     // log.debug('Rejected inside constructor', reason);
-    //   }
-    // });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -99,10 +88,6 @@ class Executor extends ExtendablePromise__default["default"] {
   }
 
   reject(reason, ...args) {
-    // if (!this.timings[EXECUTED] && reason && reason instanceof Error && reason.name === Error.prototype.name) {
-    //   reason.name = ERRORS.InitializationError;
-    // }
-
     const result = super.reject(reason, ...args);
     this[ø.finalize](REJECTED);
     return result;
