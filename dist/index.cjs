@@ -1,30 +1,21 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var enumerate = require('@js-bits/enumerate');
 var ExtendablePromise = require('@js-bits/xpromise');
 var Timeout = require('@js-bits/timeout');
 var performance = require('@js-bits/performance');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var enumerate__default = /*#__PURE__*/_interopDefaultLegacy(enumerate);
-var ExtendablePromise__default = /*#__PURE__*/_interopDefaultLegacy(ExtendablePromise);
-var Timeout__default = /*#__PURE__*/_interopDefaultLegacy(Timeout);
-var performance__default = /*#__PURE__*/_interopDefaultLegacy(performance);
-
-const { Prefix } = enumerate__default["default"];
+const { Prefix } = enumerate;
 
 // pseudo-private properties emulation in order to avoid source code transpiling
 // TODO: replace with #privateField syntax when it gains wide support
-const ø = enumerate__default["default"]`
+const ø = enumerate`
   options
   setTiming
   finalize
 `;
 
-const STATES = enumerate__default["default"]`
+const STATES = enumerate`
   CREATED
   EXECUTED
   RESOLVED
@@ -34,7 +25,7 @@ const STATES = enumerate__default["default"]`
 
 const { CREATED, EXECUTED, RESOLVED, REJECTED, SETTLED } = STATES;
 
-const ERRORS = enumerate__default["default"](Prefix('Executor|'))`
+const ERRORS = enumerate(Prefix('Executor|'))`
   InitializationError
 `;
 
@@ -46,7 +37,7 @@ const ERRORS = enumerate__default["default"](Prefix('Executor|'))`
  * @class
  * @param {Object} options - input parameters
  */
-class Executor extends ExtendablePromise__default["default"] {
+class Executor extends ExtendablePromise {
   constructor(executor, options = {}) {
     super(executor);
     this[ø.options] = options;
@@ -64,12 +55,12 @@ class Executor extends ExtendablePromise__default["default"] {
       timings[state] = undefined;
     });
 
-    if (timeout instanceof Timeout__default["default"]) {
+    if (timeout instanceof Timeout) {
       // soft timeout will be caught and processed externally
       this.timeout = timeout;
     } else if (timeout !== undefined) {
       // hard timeout (rejects the receiver if exceeded) or no timeout
-      this.timeout = new Timeout__default["default"](timeout);
+      this.timeout = new Timeout(timeout);
       this.timeout.catch(this.reject.bind(this)).catch(() => {});
     }
 
@@ -114,7 +105,7 @@ class Executor extends ExtendablePromise__default["default"] {
    * @returns {void}
    */
   [ø.setTiming](state) {
-    this.timings[state] = Math.round(performance__default["default"].now()); // milliseconds
+    this.timings[state] = Math.round(performance.now()); // milliseconds
   }
 
   /**
