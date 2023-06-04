@@ -1,3 +1,4 @@
+import Timeout from '@js-bits/timeout';
 import Executor from '../src/executor.js';
 
 const asyncOperation = new Executor(
@@ -20,7 +21,7 @@ export default (async () => {
     console.log(`Resolved in ${(asyncOperation.timings[RESOLVED] - asyncOperation.timings[EXECUTED]) / 1000} s`);
   } catch (reason) {
     // TimeoutExceededError: Operation timeout exceeded
-    if (reason.name === 'TimeoutExceededError') {
+    if (reason.name === Timeout.TimeoutExceededError) {
       console.log(`Timed out in ${asyncOperation.timings[SETTLED] - asyncOperation.timings[EXECUTED]} ms`); // Timed out in 104 ms
     }
   }

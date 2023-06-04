@@ -108,6 +108,8 @@ You can use optional `timeout` parameter to set maximum allowable execution time
 <b>Hard timeout</b>. The executor will be automatically rejected when specified timeout is exceeded. It can be set by an integer number passed as a value of `timeout` parameter.
 
 ```javascript
+import Timeout from '@js-bits/timeout';
+
 const asyncOperation = new Executor(
   (resolve, reject) => {
     setTimeout(() => {
@@ -128,7 +130,7 @@ const asyncOperation = new Executor(
     console.log(`Resolved in ${(asyncOperation.timings[RESOLVED] - asyncOperation.timings[EXECUTED]) / 1000} s`);
   } catch (reason) {
     // TimeoutExceededError: Operation timeout exceeded
-    if (reason.name === 'TimeoutExceededError') {
+    if (reason.name === Timeout.TimeoutExceededError) {
       console.log(`Timed out in ${asyncOperation.timings[SETTLED] - asyncOperation.timings[EXECUTED]} ms`); // Timed out in 104 ms
     }
   }
@@ -185,4 +187,3 @@ const { EXECUTED, RESOLVED } = Receiver.STATES;
 ## Notes
 
 - [Loader](https://www.npmjs.com/package/@js-bits/loader) - an implementation of `Executor` for HTTP requests.
-- Does not include any polyfills, which means that Internet Explorer is not supported.

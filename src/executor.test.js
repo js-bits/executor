@@ -166,7 +166,7 @@ describe('Executor', () => {
               timeout: 100,
             });
             return executor.execute().catch(reason => {
-              expect(reason.name).toEqual('TimeoutExceededError');
+              expect(reason.name).toEqual(Timeout.TimeoutExceededError);
               expect(reason.message).toEqual('Operation timeout exceeded');
             });
           });
@@ -185,7 +185,7 @@ describe('Executor', () => {
             }, 1000);
 
             timeout.catch(reason => {
-              expect(reason.name).toEqual('TimeoutExceededError');
+              expect(reason.name).toEqual('Timeout|TimeoutExceededError');
               expect(reason.message).toEqual('Operation timeout exceeded');
             });
 
