@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+// @ts-nocheck
 import Executor from '../src/executor.js';
 
 const document = {};

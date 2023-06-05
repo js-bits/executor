@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+// @ts-nocheck
 import Timeout from '@js-bits/timeout';
 import Executor from '../src/executor.js';
 

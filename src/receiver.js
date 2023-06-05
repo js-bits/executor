@@ -7,8 +7,8 @@ import Executor from './executor.js';
  * @extends Executor<T>
  */
 class Receiver extends Executor {
-  constructor(...args) {
-    super(() => {}, ...args);
+  constructor(/** @type {ConstructorParameters<typeof Executor<unknown>>[1]} */ options) {
+    super(() => {}, options);
   }
 
   /**
