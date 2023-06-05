@@ -1,4 +1,4 @@
-/* eslint-disable max-classes-per-file */
+/* eslint-disable import/no-extraneous-dependencies, max-classes-per-file */
 import { jest } from '@jest/globals';
 import Timeout from '@js-bits/timeout';
 import Executor from './executor.js';
@@ -89,7 +89,7 @@ describe('Executor', () => {
           class MyPromise extends Executor {
             constructor() {
               super((resolve, reject) => {
-                reject('async error');
+                reject(new Error('async error'));
               });
               this.execute();
             }
@@ -100,7 +100,7 @@ describe('Executor', () => {
             promise = new MyPromise();
             result = await promise;
           } catch (error) {
-            expect(error).toEqual('async error');
+            expect(error.message).toEqual('async error');
           }
           expect(promise).toEqual(expect.any(Executor));
           expect(result).toEqual('unchanged');
@@ -332,17 +332,18 @@ describe('Executor', () => {
     test('resolve', async () => {
       expect.assertions(3);
       const resolveFunc = jest.fn();
+      /** @extends {Executor<boolean>} */
       class ResolvedPromise extends Executor {
         constructor(...args) {
-          super((resolve, reject) => {
+          super(resolve => {
             resolve(true);
           }, ...args);
           this.execute();
         }
 
-        resolve(...args) {
-          resolveFunc(...args);
-          super.resolve(...args);
+        resolve(result) {
+          resolveFunc(result);
+          return super.resolve(result);
         }
       }
       const resolvedPromise = new ResolvedPromise();
@@ -364,9 +365,9 @@ describe('Executor', () => {
           this.execute();
         }
 
-        reject(...args) {
-          rejectFunc(...args);
-          super.reject(...args);
+        reject(reason) {
+          rejectFunc(reason);
+          return super.reject(reason);
         }
       }
       const rejectedPromise = new RejectedPromise();

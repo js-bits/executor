@@ -3,8 +3,10 @@ import { jest } from '@jest/globals';
 import example from './example4.js';
 
 describe('Examples', () => {
+  /** @type {any} */
+  let consoleLog;
   beforeEach(() => {
-    global.console = { log: jest.fn() };
+    consoleLog = jest.spyOn(console, 'log');
   });
   afterEach(() => {
     jest.resetModules();
@@ -13,8 +15,8 @@ describe('Examples', () => {
   test('Example 4', async () => {
     expect.assertions(3);
     await example;
-    expect(console.log).toHaveBeenCalledTimes(2);
-    expect(console.log.mock.calls[0]).toEqual(['Operation has exceeded specified timeout.']);
-    expect(console.log.mock.calls[1]).toEqual(['Success!!!']);
+    expect(consoleLog).toHaveBeenCalledTimes(2);
+    expect(consoleLog.mock.calls[0]).toEqual(['Operation has exceeded specified timeout.']);
+    expect(consoleLog.mock.calls[1]).toEqual(['Success!!!']);
   });
 });

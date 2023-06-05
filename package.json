@@ -23,11 +23,12 @@
     }
   },
   "scripts": {
-    "build": "rollup ./index.js --format cjs --file dist/index.cjs --exports named",
+    "build": "rimraf ./dist && yarn build:dts && rollup ./index.js --format cjs --file dist/index.cjs --exports named",
+    "build:dts": "tsc ./index.js --allowJs --emitDeclarationOnly --declaration --outDir dist",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "test-cjs": "jest --verbose",
     "test-watch": "yarn test --watch",
-    "lint": "eslint '**/*.{js,jsx}'",
+    "lint": "tsc --noEmit && eslint '**/*.{js,jsx}'",
     "prepare": "husky install"
   },
   "repository": {
@@ -43,7 +44,9 @@
     "husky": "^8.0.1",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
-    "rollup": "^3.23.1"
+    "rimraf": "^5.0.1",
+    "rollup": "^3.23.1",
+    "typescript": "^4.8.4"
   },
   "engines": {
     "node": ">=12"
@@ -55,8 +58,8 @@
   "dependencies": {
     "@js-bits/enumerate": "^1.0.10",
     "@js-bits/performance": "^1.0.0",
-    "@js-bits/timeout": "^1.0.1",
-    "@js-bits/xpromise": "^1.0.2"
+    "@js-bits/timeout": "^1.0.3",
+    "@js-bits/xpromise": "^1.0.4"
   },
   "jest": {
     "projects": [

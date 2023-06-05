@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Executor from '../src/executor.js';
 
 const document = {};

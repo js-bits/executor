@@ -3,8 +3,10 @@ import { jest } from '@jest/globals';
 import example from './example3.js';
 
 describe('Examples', () => {
+  /** @type {any} */
+  let consoleLog;
   beforeEach(() => {
-    global.console = { log: jest.fn() };
+    consoleLog = jest.spyOn(console, 'log');
   });
   afterEach(() => {
     jest.resetModules();
@@ -13,7 +15,7 @@ describe('Examples', () => {
   test('Example 3', async () => {
     expect.assertions(2);
     await example;
-    expect(console.log).toHaveBeenCalledTimes(1);
-    expect(console.log.mock.calls[0]).toEqual([expect.stringMatching('Timed out in \\d+ ms')]);
+    expect(consoleLog).toHaveBeenCalledTimes(1);
+    expect(consoleLog.mock.calls[0]).toEqual([expect.stringMatching('Timed out in \\d+ ms')]);
   });
 });

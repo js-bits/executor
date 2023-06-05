@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Timeout from '@js-bits/timeout';
 import Executor from '../src/executor.js';
 

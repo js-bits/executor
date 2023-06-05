@@ -21,6 +21,7 @@ describe('Receiver', () => {
         expect.assertions(7);
         const receiver = new Receiver();
         setTimeout(() => {
+          // @ts-expect-error Expected 1 arguments, but got 3.
           receiver.resolve(123, 'str', true);
           expect(receiver.timings[EXECUTED]).toBeGreaterThan(receiver.timings[CREATED]);
           receiver
@@ -44,6 +45,7 @@ describe('Receiver', () => {
         expect.assertions(5);
         const receiver = new Receiver();
         setTimeout(() => {
+          // @ts-expect-error Expected 1 arguments, but got 3.
           receiver.resolve(123, 'str', true);
         }, 100);
         expect(receiver.timings[CREATED]).toBeGreaterThan(10);
@@ -61,14 +63,14 @@ describe('Receiver', () => {
         expect.assertions(4);
         const receiver = new Receiver();
         setTimeout(() => {
-          const promise = receiver.reject('async error');
+          const promise = receiver.reject(new Error('async error'));
           expect(receiver.timings[EXECUTED]).toBeGreaterThan(receiver.timings[CREATED]);
           promise
             .then((...args) => {
               expect(args).toEqual([123]);
             })
             .catch(reason => {
-              expect(reason).toEqual('async error');
+              expect(reason.message).toEqual('async error');
               done();
             });
         }, 100);
@@ -81,12 +83,12 @@ describe('Receiver', () => {
         expect.assertions(5);
         const receiver = new Receiver();
         setTimeout(() => {
-          receiver.reject('async error');
+          receiver.reject(new Error('async error'));
         }, 100);
         expect(receiver.timings[CREATED]).toBeGreaterThan(10);
         expect(receiver.timings[EXECUTED]).toBeUndefined();
         receiver.catch((...args) => {
-          expect(args).toEqual(['async error']);
+          expect(args).toEqual([new Error('async error')]);
           expect(receiver.timings[EXECUTED]).toBeGreaterThanOrEqual(receiver.timings[CREATED]);
           done();
         });
@@ -121,9 +123,9 @@ describe('Receiver', () => {
     test('should return receiver', async () => {
       expect.assertions(2);
       const receiver = new Receiver();
-      expect(receiver.reject('async error')).toBe(receiver);
+      expect(receiver.reject(new Error('async error'))).toBe(receiver);
       receiver.catch(error => {
-        expect(error).toEqual('async error');
+        expect(error.message).toEqual('async error');
       });
     });
   });

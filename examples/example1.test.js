@@ -6,14 +6,19 @@ jest.spyOn(global.console, 'log');
 import example from './example1.js';
 
 describe('Examples', () => {
+  /** @type {any} */
+  let consoleLog;
+  beforeEach(() => {
+    consoleLog = jest.spyOn(console, 'log');
+  });
   afterEach(() => {
     jest.resetModules();
   });
 
   test('Example 1', async () => {
     expect.assertions(2);
-    const value = await example;
-    expect(console.log).toHaveBeenCalledTimes(1);
-    expect(console.log.mock.calls[0]).toEqual(['result', 123]);
+    await example;
+    expect(consoleLog).toHaveBeenCalledTimes(1);
+    expect(consoleLog.mock.calls[0]).toEqual(['result', 123]);
   });
 });
