@@ -715,10 +715,10 @@
   resolved "https://registry.yarnpkg.com/@js-bits/log-in-color/-/log-in-color-1.0.1.tgz#b3e19e4b401f881e1b448b1aa15fffce5cffc0e8"
   integrity sha512-sHYPPn9F5/hlMz/rTX/J2pOketrwSbXfmo6c2WjcXRwr5juNOoFt9XbwM+WOtgQ/3OzJXOCatn96ZvvgMH3pWg==
 
-"@js-bits/performance@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-1.0.0.tgz#bd78dede87955ded41b1a8db279ec2140d986d1f"
-  integrity sha512-azfOT56pB4zfvM4hO8BTnDaWn2hWvSHW13j6i1pjvrFV14ZUtF09ogmLg/Yj7kVQDxVQ6JBuDXnDOwQYXy1G0w==
+"@js-bits/performance@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-1.0.1.tgz#1288c1fa6a61a7a0ba95904672192fc9391280a8"
+  integrity sha512-pWCwa83umeq1diVAdrZQWO4CM5WvKQ7AY8snDusIW3WwUCbBvyMItmUB0pE7OLnB3SCCb20ex1/M614yOE5xrw==
   dependencies:
     "@types/node" "^20.2.5"
 

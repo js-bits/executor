@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@js-bits/enumerate": "^1.0.10",
-    "@js-bits/performance": "^1.0.0",
+    "@js-bits/performance": "^1.0.1",
     "@js-bits/timeout": "^1.0.3",
     "@js-bits/xpromise": "^1.0.4"
   },
