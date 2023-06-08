@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// @ts-nocheck
 import Receiver from '../src/receiver.js';
 
 const someAsyncValue = new Receiver();

@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-unused-vars, no-console */
 // @ts-nocheck
 import Executor from '../src/executor.js';
 

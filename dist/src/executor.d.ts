@@ -1,18 +1,18 @@
 export default Executor;
 export type Statuses = {
-    readonly CREATED: typeof UniqueSymbols.UNIQUE_SYMBOL312;
-    readonly EXECUTED: typeof UniqueSymbols.UNIQUE_SYMBOL313;
-    readonly RESOLVED: typeof UniqueSymbols.UNIQUE_SYMBOL314;
-    readonly REJECTED: typeof UniqueSymbols.UNIQUE_SYMBOL315;
-    readonly SETTLED: typeof UniqueSymbols.UNIQUE_SYMBOL316;
+    readonly CREATED: "CREATED";
+    readonly EXECUTED: "EXECUTED";
+    readonly RESOLVED: "RESOLVED";
+    readonly REJECTED: "REJECTED";
+    readonly SETTLED: "SETTLED";
 };
 export type StateCodes = Statuses[keyof Statuses];
 export type Timings = {
-    [UniqueSymbols.UNIQUE_SYMBOL312]?: number;
-    [UniqueSymbols.UNIQUE_SYMBOL313]?: number;
-    [UniqueSymbols.UNIQUE_SYMBOL314]?: number;
-    [UniqueSymbols.UNIQUE_SYMBOL315]?: number;
-    [UniqueSymbols.UNIQUE_SYMBOL316]?: number;
+    CREATED?: number;
+    EXECUTED?: number;
+    RESOLVED?: number;
+    REJECTED?: number;
+    SETTLED?: number;
 };
 /**
  * Base class for any Executor extends Promise functionality.
@@ -85,7 +85,7 @@ declare class Executor<T> extends ExtendablePromise<T> {
         timeout?: number | Timeout;
     };
 }
-declare const STATES: import("@js-bits/enumerate/types/types").EnumType<"\n  CREATED\n  EXECUTED\n  RESOLVED\n  REJECTED\n  SETTLED\n", SymbolConstructor, ["CREATED", "EXECUTED", "RESOLVED", "REJECTED", "SETTLED"]>;
+declare const STATES: import("@js-bits/enumerate/types/types").EnumType<"\n  CREATED\n  EXECUTED\n  RESOLVED\n  REJECTED\n  SETTLED\n", StringConstructor, ["CREATED", "EXECUTED", "RESOLVED", "REJECTED", "SETTLED"]>;
 import ExtendablePromise from "@js-bits/xpromise";
 import Timeout from "@js-bits/timeout";
 

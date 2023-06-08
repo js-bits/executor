@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-unused-vars, no-console */
 import Executor from '../src/executor.js';
 
 const asyncOperation = new Executor((resolve, reject) => {

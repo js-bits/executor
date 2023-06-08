@@ -15,13 +15,16 @@ const ø = enumerate.ts(`
   finalize
 `);
 
-const STATES = enumerate.ts(`
+const STATES = enumerate.ts(
+  `
   CREATED
   EXECUTED
   RESOLVED
   REJECTED
   SETTLED
-`);
+`,
+  String
+);
 
 /**
  * @typedef {{ readonly [Key in Exclude<keyof STATES, symbol>]: (typeof STATES)[Key]}} Statuses
