@@ -4,6 +4,7 @@
   "description": "Abstract Executor class",
   "keywords": [
     "javascript",
+    "typescript",
     "abstract",
     "executor",
     "pattern",
