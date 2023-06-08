@@ -24,11 +24,15 @@ const STATES = enumerate.ts(`
 `);
 
 /**
- * @typedef {Exclude<typeof STATES[keyof typeof STATES], boolean>} States
+ * @typedef {{ readonly [Key in Exclude<keyof STATES, symbol>]: (typeof STATES)[Key]}} Statuses
  */
 
 /**
- * @typedef {{ [Key in States]?: number; }} Timings
+ * @typedef {Statuses[keyof Statuses]} StateCodes
+ */
+
+/**
+ * @typedef {{ [Key in StateCodes]?: number }} Timings
  */
 
 const ERRORS = enumerate.ts(
@@ -47,10 +51,29 @@ const ERRORS = enumerate.ts(
  * @extends ExtendablePromise<T>
  */
 class Executor extends ExtendablePromise {
+  // /**
+  //  * @type {'Executor|InitializationError'}
+  //  * @readonly
+  //  */
+  // static InstantiationError = ERRORS.InitializationError;
+
   /**
    * @readonly
+   * @type {Statuses}
    */
   static STATES = STATES;
+
+  /**
+   * Reference to store performance timings
+   * @type {Timings}
+   */
+  timings;
+
+  /**
+   * Reference to the timeout (if specified)
+   * @type {Timeout}
+   */
+  timeout;
 
   /**
    *
@@ -62,11 +85,6 @@ class Executor extends ExtendablePromise {
     this[ø.options] = options;
 
     const { timings = {}, timeout } = options;
-
-    /**
-     * Reference to store performance timings
-     * @type {Timings}
-     */
 
     this.timings = timings;
 
@@ -94,7 +112,7 @@ class Executor extends ExtendablePromise {
 
   /**
    * Resolves `Executor`
-   * @param result
+   * @param value
    * @returns {this}
    */
   resolve(/** @type {T} */ value) {
@@ -131,8 +149,9 @@ class Executor extends ExtendablePromise {
   /**
    * Measures performance metrics
    * @private
-   * @param {States} state - 'executed', 'resolved' or 'rejected'
+   * @param {StateCodes} state - CREATED, RESOLVED etc.
    * @returns {void}
+   * @ignore
    */
   [ø.setTiming](state) {
     // @ts-ignore
@@ -141,8 +160,10 @@ class Executor extends ExtendablePromise {
 
   /**
    * @private
-   * @param {States} state - 'executed', 'resolved' or 'rejected'
+   * @param {StateCodes} state - CREATED, RESOLVED etc.
    * @returns {void}
+   * @param {any} state
+   * @ignore
    */
   [ø.finalize](state) {
     if (this.timeout) this.timeout.clear();
