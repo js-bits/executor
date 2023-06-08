@@ -1,9 +1,18 @@
 export default Executor;
-export type States = Exclude<(typeof STATES)[keyof typeof STATES], boolean>;
+export type Statuses = {
+    readonly CREATED: typeof UniqueSymbols.UNIQUE_SYMBOL312;
+    readonly EXECUTED: typeof UniqueSymbols.UNIQUE_SYMBOL313;
+    readonly RESOLVED: typeof UniqueSymbols.UNIQUE_SYMBOL314;
+    readonly REJECTED: typeof UniqueSymbols.UNIQUE_SYMBOL315;
+    readonly SETTLED: typeof UniqueSymbols.UNIQUE_SYMBOL316;
+};
+export type StateCodes = Statuses[keyof Statuses];
 export type Timings = {
-    [x: string]: number;
-    [x: number]: number;
-    [x: symbol]: number;
+    [UniqueSymbols.UNIQUE_SYMBOL312]?: number;
+    [UniqueSymbols.UNIQUE_SYMBOL313]?: number;
+    [UniqueSymbols.UNIQUE_SYMBOL314]?: number;
+    [UniqueSymbols.UNIQUE_SYMBOL315]?: number;
+    [UniqueSymbols.UNIQUE_SYMBOL316]?: number;
 };
 /**
  * Base class for any Executor extends Promise functionality.
@@ -16,8 +25,9 @@ export type Timings = {
 declare class Executor<T> extends ExtendablePromise<T> {
     /**
      * @readonly
+     * @type {Statuses}
      */
-    static readonly STATES: any;
+    static readonly STATES: Statuses;
     /**
      *
      * @param {ConstructorParameters<typeof ExtendablePromise<T>>[0]} executor
@@ -32,10 +42,14 @@ declare class Executor<T> extends ExtendablePromise<T> {
      * @type {Timings}
      */
     timings: Timings;
+    /**
+     * Reference to the timeout (if specified)
+     * @type {Timeout}
+     */
     timeout: Timeout;
     /**
      * Resolves `Executor`
-     * @param result
+     * @param value
      * @returns {this}
      */
     resolve(value: T): this;
@@ -50,7 +64,29 @@ declare class Executor<T> extends ExtendablePromise<T> {
      * @returns {this} - a promise
      */
     execute(...args: unknown[]): this;
+    /**
+     * Measures performance metrics
+     * @private
+     * @param {StateCodes} state - CREATED, RESOLVED etc.
+     * @returns {void}
+     * @ignore
+     */
+    private [UniqueSymbols.UNIQUE_SYMBOL481];
+    /**
+     * @private
+     * @param {StateCodes} state - CREATED, RESOLVED etc.
+     * @returns {void}
+     * @param {any} state
+     * @ignore
+     */
+    private [UniqueSymbols.UNIQUE_SYMBOL482];
+    [UniqueSymbols.UNIQUE_SYMBOL480]: {
+        timings?: Timings;
+        timeout?: number | Timeout;
+    };
 }
-declare const STATES: any;
+declare const STATES: import("@js-bits/enumerate/types/types").EnumType<"\n  CREATED\n  EXECUTED\n  RESOLVED\n  REJECTED\n  SETTLED\n", SymbolConstructor, ["CREATED", "EXECUTED", "RESOLVED", "REJECTED", "SETTLED"]>;
 import ExtendablePromise from "@js-bits/xpromise";
 import Timeout from "@js-bits/timeout";
+
+import * as UniqueSymbols from '@js-bits/enumerate/types/unique-symbols';

@@ -24,7 +24,9 @@
   },
   "scripts": {
     "build": "rimraf ./dist && yarn build:dts && rollup ./index.js --format cjs --file dist/index.cjs --exports named",
-    "build:dts": "tsc ./index.js --allowJs --emitDeclarationOnly --declaration --outDir dist",
+    "build:states": "tsc ./index.ts --allowJs --emitDeclarationOnly --declaration --outFile dist/states2.d.ts",
+    "build:dts": "tsc ./index.js --allowJs --emitDeclarationOnly --declaration --esModuleInterop --outDir dist && yarn replace:symbols ./dist/src/executor.d.ts",
+    "replace:symbols": "node node_modules/@js-bits/enumerate/scripts/replace-unique-symbols",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "test-cjs": "jest --verbose",
     "test-watch": "yarn test --watch",
@@ -56,10 +58,10 @@
     "extends": "@js-bits/eslint-config/.eslintrc.json"
   },
   "dependencies": {
-    "@js-bits/enumerate": "^1.0.10",
+    "@js-bits/enumerate": "^1.0.16",
     "@js-bits/performance": "^1.0.1",
-    "@js-bits/timeout": "^1.0.3",
-    "@js-bits/xpromise": "^1.0.4"
+    "@js-bits/timeout": "^1.0.5",
+    "@js-bits/xpromise": "^1.0.6"
   },
   "jest": {
     "projects": [
