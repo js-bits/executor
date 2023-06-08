@@ -157,7 +157,6 @@ class Executor extends ExtendablePromise {
    * @ignore
    */
   [ø.setTiming](state) {
-    // @ts-ignore
     this.timings[state] = Math.round(performance.now()); // milliseconds
   }
 
