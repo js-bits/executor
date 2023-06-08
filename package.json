@@ -1,6 +1,6 @@
 {
   "name": "@js-bits/executor",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Abstract Executor class",
   "keywords": [
     "javascript",
