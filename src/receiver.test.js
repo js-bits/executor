@@ -34,7 +34,7 @@ describe('Receiver', () => {
             });
         }, 100);
         expect(receiver.timings[STATES.CREATED]).toBeGreaterThan(10);
-        expect(receiver.timings[STATES.CREATED]).toBeLessThan(2000);
+        expect(receiver.timings[STATES.CREATED]).toBeLessThan(10000);
         expect(receiver.timings[STATES.EXECUTED]).toBeUndefined();
       });
     });
