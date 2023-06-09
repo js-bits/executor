@@ -26,7 +26,6 @@
   },
   "scripts": {
     "build": "rimraf ./dist && yarn build:dts && rollup ./index.js --format cjs --file dist/index.cjs --exports named",
-    "build:states": "tsc ./index.ts --allowJs --emitDeclarationOnly --declaration --outFile dist/states2.d.ts",
     "build:dts": "tsc ./index.js --allowJs --emitDeclarationOnly --declaration --esModuleInterop --outDir dist && yarn replace:symbols ./dist/src/executor.d.ts",
     "replace:symbols": "node node_modules/@js-bits/enumerate/scripts/replace-unique-symbols",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
