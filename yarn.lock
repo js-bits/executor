@@ -675,12 +675,12 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@js-bits/enumerate@^1.0.16":
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-1.0.16.tgz#fec0af75a2a3ff6696b048184e4c3dc581e3f014"
-  integrity sha512-4I8gcuAhsehytEyIF9gTqKebS8P8D/76/Voo7iRTuUbwdLkdmBCos+v9iAVTu/ltY/XpM0fPkHSEP3lwI0xP0g==
+"@js-bits/enumerate@^1.0.17":
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-1.0.17.tgz#38de70907ac2800f84c4793695b8a9995a3a8b30"
+  integrity sha512-uxRG1vFoCB0lOliStRfFRzExm/KCQF9QAuakrfhn3iUJC1iv5mCgrwxLnxcVepYYz2Rwo7A7CNHgvzie7MepMw==
   dependencies:
-    "@js-bits/typedef-utils" "^1.0.4"
+    "@js-bits/typedef-utils" "^1.0.6"
 
 "@js-bits/eslint-config@^1.0.3":
   version "1.0.3"
@@ -710,37 +710,37 @@
     prettier "^2.8.8"
     typescript "^4.8.4"
 
-"@js-bits/log-in-color@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@js-bits/log-in-color/-/log-in-color-1.0.1.tgz#b3e19e4b401f881e1b448b1aa15fffce5cffc0e8"
-  integrity sha512-sHYPPn9F5/hlMz/rTX/J2pOketrwSbXfmo6c2WjcXRwr5juNOoFt9XbwM+WOtgQ/3OzJXOCatn96ZvvgMH3pWg==
+"@js-bits/log-in-color@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@js-bits/log-in-color/-/log-in-color-1.0.2.tgz#c4a9ce4576f33c653ee751f1c8aca234bbdf1436"
+  integrity sha512-g709PwmOlYHLEgvV8mcLEXuPD2xqMHiGlrr6Byf9XDT8CwhuHppchPq9mWgFjGw0lYMunOAkpR4ANkBSCy87yw==
 
-"@js-bits/performance@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-1.0.1.tgz#1288c1fa6a61a7a0ba95904672192fc9391280a8"
-  integrity sha512-pWCwa83umeq1diVAdrZQWO4CM5WvKQ7AY8snDusIW3WwUCbBvyMItmUB0pE7OLnB3SCCb20ex1/M614yOE5xrw==
+"@js-bits/performance@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@js-bits/performance/-/performance-1.0.2.tgz#65623faf93c4aee173d4f493cab558cd8b0d79d2"
+  integrity sha512-dPdrsXmS0YdS3tW8PbLPrqOMX5eBkLPKdRExGgapS0fxyL7dTVttyw543UHQt09a0TckmIbqP5bP7apdHpdwqQ==
   dependencies:
     "@types/node" "^20.2.5"
 
-"@js-bits/timeout@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-1.0.5.tgz#57d9beedcb61ae7bb7aa3b912e6cc24ac47c08c4"
-  integrity sha512-u9N3H/TCojbkM+eyJgrdKDj+3rVWNS4rZgsCpvQUQpoiwdkbUKGAYZK+MCiemzMJj5rTYMWjtOglEMmWuTohoA==
+"@js-bits/timeout@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@js-bits/timeout/-/timeout-1.0.8.tgz#6644e3d9f888d8b76b5361b4876fbebd97292f24"
+  integrity sha512-5D5c4sCMcNvM51OaTFqom2H66owDGno0UN7rvGE0gzTufUrKvDEbxNoa64fOH+vsNgwSRZkL6aQSwUmVGfdL5Q==
   dependencies:
-    "@js-bits/enumerate" "^1.0.16"
-    "@js-bits/xpromise" "^1.0.6"
+    "@js-bits/enumerate" "^1.0.17"
+    "@js-bits/xpromise" "^1.0.8"
 
-"@js-bits/typedef-utils@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@js-bits/typedef-utils/-/typedef-utils-1.0.4.tgz#8505fb70f07982abdfcc7bf5acae2ea8fe131a59"
-  integrity sha512-/2KaKjrtBNM9Q3iHYG3+8FjgG9VETvnqs4IRNlG4XPWur/G9C4A4CvtCJxiIQcbXaMc9dniCrbh3bM3XUntM/A==
-
-"@js-bits/xpromise@^1.0.6":
+"@js-bits/typedef-utils@^1.0.6":
   version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-1.0.6.tgz#418d9f232916dfa7407d3ae33f35166001df7fcb"
-  integrity sha512-lTOkQJxF9JEg99vku93fWn/p+gLqZv+l0yCdOrwVYHyY/IE5Fzy9rioDQXkZ6gEX3BH6DRdqOeu8P3V0fFn4LA==
+  resolved "https://registry.yarnpkg.com/@js-bits/typedef-utils/-/typedef-utils-1.0.6.tgz#c3fd39dba685ced143080002714a4c7da950b1b2"
+  integrity sha512-tO5y4IYguKXtlu9rOSxItruNhsn4SXQiGgxLVEtaVmX89d0xYPQ+TQ1T/HvlXx/pTFlCG1poejwLuSXjQwTOVQ==
+
+"@js-bits/xpromise@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@js-bits/xpromise/-/xpromise-1.0.8.tgz#be7fae3cfde3c8e597c6392f7371ab28186646ab"
+  integrity sha512-eR2XkAR6Nb4/TcKgCgw4qnMeXsB/UBlWOCJIsjbqpKc/gvRO7VbZpuOUJTqEf7rQ5V7HkEkSM1fNiFD2biFlSA==
   dependencies:
-    "@js-bits/enumerate" "^1.0.16"
+    "@js-bits/enumerate" "^1.0.17"
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
