@@ -35,6 +35,10 @@ const STATES = enumerate.ts(
  */
 
 /**
+ * @typedef {{timings?: Timings, timeout?: number | Timeout}} Options
+ */
+
+/**
  * Base class for any Executor extends Promise functionality.
  * Executor is a class of objects which can perform some simple action
  * (e.g. AJAX request or function call) and return received data asynchronously.
@@ -64,7 +68,7 @@ class Executor extends ExtendablePromise {
   /**
    *
    * @param {ConstructorParameters<typeof ExtendablePromise<T>>[0]} executor
-   * @param {{timings?: Timings, timeout?: number | Timeout}} options - input parameters
+   * @param {Options} options - input parameters
    */
   constructor(executor, options = {}) {
     super(executor);
