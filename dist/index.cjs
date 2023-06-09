@@ -5,8 +5,6 @@ var ExtendablePromise = require('@js-bits/xpromise');
 var Timeout = require('@js-bits/timeout');
 var performance = require('@js-bits/performance');
 
-const { Prefix } = enumerate;
-
 // pseudo-private properties emulation in order to avoid source code transpiling
 // TODO: replace with #privateField syntax when it gains wide support
 const ø = enumerate.ts(`
@@ -38,12 +36,9 @@ const STATES = enumerate.ts(
  * @typedef {{ [Key in StateCodes]?: number }} Timings
  */
 
-const ERRORS = enumerate.ts(
-  `
-  InitializationError
-`,
-  Prefix('Executor|')
-);
+/**
+ * @typedef {{timings?: Timings, timeout?: number | Timeout}} Options
+ */
 
 /**
  * Base class for any Executor extends Promise functionality.
@@ -54,15 +49,9 @@ const ERRORS = enumerate.ts(
  * @extends ExtendablePromise<T>
  */
 class Executor extends ExtendablePromise {
-  // /**
-  //  * @type {'Executor|InitializationError'}
-  //  * @readonly
-  //  */
-  // static InstantiationError = ERRORS.InitializationError;
-
   /**
-   * @readonly
    * @type {Statuses}
+   * @readonly
    */
   static STATES = STATES;
 
@@ -81,7 +70,7 @@ class Executor extends ExtendablePromise {
   /**
    *
    * @param {ConstructorParameters<typeof ExtendablePromise<T>>[0]} executor
-   * @param {{timings?: Timings, timeout?: number | Timeout}} options - input parameters
+   * @param {Options} options - input parameters
    */
   constructor(executor, options = {}) {
     super(executor);
@@ -173,8 +162,6 @@ class Executor extends ExtendablePromise {
     this.timings[STATES.SETTLED] = this.timings[state];
   }
 }
-
-Object.assign(Executor, ERRORS);
 
 /**
  * Does nothing but waits to be resolved or rejected by external code

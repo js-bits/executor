@@ -14,6 +14,22 @@ export type Timings = {
     REJECTED?: number;
     SETTLED?: number;
 };
+export type Options = {
+    timings?: Timings;
+    timeout?: number | Timeout;
+};
+/**
+ * @typedef {{ readonly [Key in Exclude<keyof STATES, symbol>]: (typeof STATES)[Key]}} Statuses
+ */
+/**
+ * @typedef {Statuses[keyof Statuses]} StateCodes
+ */
+/**
+ * @typedef {{ [Key in StateCodes]?: number }} Timings
+ */
+/**
+ * @typedef {{timings?: Timings, timeout?: number | Timeout}} Options
+ */
 /**
  * Base class for any Executor extends Promise functionality.
  * Executor is a class of objects which can perform some simple action
@@ -24,19 +40,16 @@ export type Timings = {
  */
 declare class Executor<T> extends ExtendablePromise<T> {
     /**
-     * @readonly
      * @type {Statuses}
+     * @readonly
      */
     static readonly STATES: Statuses;
     /**
      *
      * @param {ConstructorParameters<typeof ExtendablePromise<T>>[0]} executor
-     * @param {{timings?: Timings, timeout?: number | Timeout}} options - input parameters
+     * @param {Options} options - input parameters
      */
-    constructor(executor: ConstructorParameters<typeof ExtendablePromise<T>>[0], options?: {
-        timings?: Timings;
-        timeout?: number | Timeout;
-    });
+    constructor(executor: ConstructorParameters<typeof ExtendablePromise<T>>[0], options?: Options);
     /**
      * Reference to store performance timings
      * @type {Timings}
@@ -80,13 +93,10 @@ declare class Executor<T> extends ExtendablePromise<T> {
      * @ignore
      */
     private [UniqueSymbols.UNIQUE_SYMBOL482];
-    [UniqueSymbols.UNIQUE_SYMBOL480]: {
-        timings?: Timings;
-        timeout?: number | Timeout;
-    };
+    [UniqueSymbols.UNIQUE_SYMBOL480]: Options;
 }
 declare const STATES: import("@js-bits/enumerate/types/types").EnumType<"\n  CREATED\n  EXECUTED\n  RESOLVED\n  REJECTED\n  SETTLED\n", StringConstructor, ["CREATED", "EXECUTED", "RESOLVED", "REJECTED", "SETTLED"]>;
-import ExtendablePromise from "@js-bits/xpromise";
 import Timeout from "@js-bits/timeout";
+import ExtendablePromise from "@js-bits/xpromise";
 
 import * as UniqueSymbols from '@js-bits/enumerate/types/unique-symbols';
