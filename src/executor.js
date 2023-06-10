@@ -66,7 +66,7 @@ class Executor extends ExtendablePromise {
   timeout;
 
   /**
-   *
+   * Creates new `Executor` instance.
    * @param {ConstructorParameters<typeof ExtendablePromise<T>>[0]} executor
    * @param {Options} options - input parameters
    */
@@ -102,10 +102,10 @@ class Executor extends ExtendablePromise {
 
   /**
    * Resolves `Executor`
-   * @param value
+   * @param {T} value
    * @returns {this}
    */
-  resolve(/** @type {T} */ value) {
+  resolve(value) {
     const result = super.resolve(value);
     this[ø.finalize](STATES.RESOLVED);
     return result;
@@ -113,10 +113,10 @@ class Executor extends ExtendablePromise {
 
   /**
    * Rejects `Executor`
-   * @param reason
+   * @param {Error} reason
    * @returns {this}
    */
-  reject(/** @type {Error} */ reason) {
+  reject(reason) {
     const result = super.reject(reason);
     this[ø.finalize](STATES.REJECTED);
     return result;
@@ -124,9 +124,10 @@ class Executor extends ExtendablePromise {
 
   /**
    * Returns promise which will be resolved when data is received.
+   * @param {unknown[]} args
    * @returns {this} - a promise
    */
-  execute(/** @type {unknown[]} */ ...args) {
+  execute(...args) {
     if (!this.timings[STATES.EXECUTED] && !this.timings[STATES.SETTLED]) {
       super.execute(...args);
       this[ø.setTiming](STATES.EXECUTED);
@@ -141,7 +142,6 @@ class Executor extends ExtendablePromise {
    * @private
    * @param {StateCodes} state - CREATED, RESOLVED etc.
    * @returns {void}
-   * @ignore
    */
   [ø.setTiming](state) {
     this.timings[state] = Math.round(performance.now()); // milliseconds
@@ -151,8 +151,6 @@ class Executor extends ExtendablePromise {
    * @private
    * @param {StateCodes} state - CREATED, RESOLVED etc.
    * @returns {void}
-   * @param {any} state
-   * @ignore
    */
   [ø.finalize](state) {
     if (this.timeout) this.timeout.clear();

@@ -7,7 +7,11 @@ import Executor from './executor.js';
  * @extends Executor<T>
  */
 class Receiver extends Executor {
-  constructor(/** @type {ConstructorParameters<typeof Executor<unknown>>[1]} */ options) {
+  /**
+   * Creates new `Receiver` instance.
+   * @param {ConstructorParameters<typeof Executor<unknown>>[1]} options
+   */
+  constructor(options) {
     super(() => {}, options);
   }
 
@@ -23,10 +27,10 @@ class Receiver extends Executor {
 
   /**
    * Resolves `Receiver`
-   * @param result
+   * @param {T} result
    * @returns {this}
    */
-  resolve(/** @type {T} */ result) {
+  resolve(result) {
     // execute when the result first gets resolved
     this.execute();
     return super.resolve(result);
@@ -34,10 +38,10 @@ class Receiver extends Executor {
 
   /**
    * Rejects `Receiver`
-   * @param reason
+   * @param {Error} reason
    * @returns {this}
    */
-  reject(/** @type {Error} */ reason) {
+  reject(reason) {
     // execute when the result first gets reject
     this.execute();
     return super.reject(reason);
