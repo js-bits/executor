@@ -43,8 +43,8 @@
   "dependencies": {
     "@js-bits/enumerate": "^1.0.17",
     "@js-bits/performance": "^1.0.2",
-    "@js-bits/timeout": "^1.0.8",
-    "@js-bits/xpromise": "^1.0.8"
+    "@js-bits/timeout": "^1.0.9",
+    "@js-bits/xpromise": "^1.0.10"
   },
   "devDependencies": {
     "@js-bits/formalinter": "^1.0.3",
