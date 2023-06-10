@@ -23,11 +23,11 @@ const STATES = enumerate.ts(
 );
 
 /**
- * @typedef {{ readonly [Key in Exclude<keyof STATES, symbol>]: (typeof STATES)[Key]}} Statuses
+ * @typedef {{ readonly [Key in Exclude<keyof STATES, symbol>]: (typeof STATES)[Key]}} States
  */
 
 /**
- * @typedef {Statuses[keyof Statuses]} StateCodes
+ * @typedef {States[keyof States]} StateCodes
  */
 
 /**
