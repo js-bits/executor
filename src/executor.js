@@ -48,12 +48,6 @@ const STATES = enumerate.ts(
  */
 class Executor extends ExtendablePromise {
   /**
-   * @type {Statuses}
-   * @readonly
-   */
-  static STATES = STATES;
-
-  /**
    * Reference to store performance timings
    * @type {Timings}
    */
@@ -158,5 +152,8 @@ class Executor extends ExtendablePromise {
     this.timings[STATES.SETTLED] = this.timings[state];
   }
 }
+
+// Assigning properties like this helps typescript to declare the namespace properly
+Executor.STATES = { ...STATES };
 
 export default Executor;
