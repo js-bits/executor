@@ -31,7 +31,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "test-cjs": "jest --verbose",
     "test-watch": "yarn test --watch",
-    "lint": "tsc --noEmit && eslint '**/*.{js,jsx}'",
+    "lint": "tsc --noEmit && eslint '**/*.{js,jsx,ts,tsx}'",
     "prepare": "husky install"
   },
   "repository": {
@@ -40,6 +40,12 @@
   },
   "author": "https://github.com/apolo-gh",
   "license": "ISC",
+  "dependencies": {
+    "@js-bits/enumerate": "^1.0.17",
+    "@js-bits/performance": "^1.0.2",
+    "@js-bits/timeout": "^1.0.8",
+    "@js-bits/xpromise": "^1.0.8"
+  },
   "devDependencies": {
     "@js-bits/formalinter": "^1.0.3",
     "@js-bits/log-in-color": "^1.0.2",
@@ -57,12 +63,6 @@
   "prettier": "@js-bits/formalinter/.prettierrc.json",
   "eslintConfig": {
     "extends": "@js-bits/eslint-config/.eslintrc.json"
-  },
-  "dependencies": {
-    "@js-bits/enumerate": "^1.0.17",
-    "@js-bits/performance": "^1.0.2",
-    "@js-bits/timeout": "^1.0.8",
-    "@js-bits/xpromise": "^1.0.8"
   },
   "jest": {
     "projects": [
