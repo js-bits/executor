@@ -9,7 +9,7 @@ import Executor from './executor.js';
 class Receiver extends Executor {
   /**
    * Creates new `Receiver` instance.
-   * @param {ConstructorParameters<typeof Executor<unknown>>[1]} options
+   * @param {ConstructorParameters<typeof Executor<unknown>>[1]} [options]
    */
   constructor(options) {
     super(() => {}, options);

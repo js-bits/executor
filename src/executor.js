@@ -62,7 +62,7 @@ class Executor extends ExtendablePromise {
   /**
    * Creates new `Executor` instance.
    * @param {ConstructorParameters<typeof ExtendablePromise<T>>[0]} executor
-   * @param {Options} options - input parameters
+   * @param {Options} [options] - input parameters
    */
   constructor(executor, options = {}) {
     super(executor);
