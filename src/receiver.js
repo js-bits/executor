@@ -7,6 +7,11 @@ import Executor from './executor.js';
  * @extends Executor<T>
  */
 class Receiver extends Executor {
+  // eslint-disable-next-line class-methods-use-this
+  get [Symbol.toStringTag]() {
+    return Receiver.name;
+  }
+
   /**
    * Creates new `Receiver` instance.
    * @param {ConstructorParameters<typeof Executor<unknown>>[1]} [options]

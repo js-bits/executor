@@ -11,6 +11,7 @@ describe('Receiver', () => {
     expect(receiver).toBeInstanceOf(Receiver);
     expect(receiver).toBeInstanceOf(Executor);
     expect(receiver).toBeInstanceOf(Promise);
+    expect(String(receiver)).toEqual('[object Receiver]');
   });
 
   describe('check executed', () => {
