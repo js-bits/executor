@@ -91,7 +91,7 @@ class Executor extends ExtendablePromise {
 
   // eslint-disable-next-line class-methods-use-this
   get [Symbol.toStringTag]() {
-    return 'Executor';
+    return Executor.name;
   }
 
   /**
