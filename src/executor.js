@@ -154,6 +154,7 @@ class Executor extends ExtendablePromise {
 }
 
 // Assigning properties like this helps typescript to declare the namespace properly
+/** @type {States} */
 Executor.STATES = { ...STATES };
 
 // eslint-disable-next-line import/prefer-default-export

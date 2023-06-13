@@ -26,8 +26,8 @@
   },
   "scripts": {
     "build": "rimraf ./dist && yarn build:dts && rollup ./index.js --format cjs --file dist/index.cjs --exports named",
-    "build:dts": "tsc ./index.js --allowJs --emitDeclarationOnly --declaration --esModuleInterop --outDir dist && yarn replace:symbols ./dist/src/executor.d.ts",
-    "replace:symbols": "node node_modules/@js-bits/enumerate/scripts/replace-unique-symbols",
+    "build:dts": "tsc ./index.js --allowJs --emitDeclarationOnly --declaration --esModuleInterop --outDir dist && yarn prepare:dts",
+    "prepare:dts": "node node_modules/@js-bits/enumerate/scripts/replace-unique-symbols ./dist/src/executor.d.ts && node node_modules/@js-bits/enumerate/scripts/replace-enum-ref ./dist/src/executor.d.ts",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "test-cjs": "jest --verbose",
     "test-watch": "yarn test --watch",
@@ -41,7 +41,7 @@
   "author": "https://github.com/apolo-gh",
   "license": "ISC",
   "dependencies": {
-    "@js-bits/enumerate": "^1.0.19",
+    "@js-bits/enumerate": "^1.0.20",
     "@js-bits/performance": "^1.0.3",
     "@js-bits/timeout": "^1.0.13",
     "@js-bits/xpromise": "^1.0.15"

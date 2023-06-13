@@ -683,6 +683,14 @@
     "@js-bits/log-in-color" "^1.0.2"
     "@js-bits/typedef-utils" "^1.0.7"
 
+"@js-bits/enumerate@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/@js-bits/enumerate/-/enumerate-1.0.20.tgz#5bcf6d69e86fd626a83aef1f7a1f8dc650cd61cb"
+  integrity sha512-ZWiXLDPQ4ltQ9OntPuwO7+2+WPlcCfiMP9sXLLPWyMN2pX3XPfiroIa0T2qNgVqs14Uew80H6bFNnO4dXIHYWQ==
+  dependencies:
+    "@js-bits/log-in-color" "^1.0.2"
+    "@js-bits/typedef-utils" "^1.0.7"
+
 "@js-bits/eslint-config@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@js-bits/eslint-config/-/eslint-config-1.0.3.tgz#cfd341f6f016528838a987ea7c008e7936e75593"
