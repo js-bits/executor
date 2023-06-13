@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars, no-console */
 import Timeout from '@js-bits/timeout';
-import Executor from '../src/executor.js';
+import { Executor } from '../src/executor.js';
 
 const asyncOperation = new Executor(
   (resolve, reject) => {

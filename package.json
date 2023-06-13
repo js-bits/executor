@@ -41,10 +41,10 @@
   "author": "https://github.com/apolo-gh",
   "license": "ISC",
   "dependencies": {
-    "@js-bits/enumerate": "^1.0.17",
-    "@js-bits/performance": "^1.0.2",
-    "@js-bits/timeout": "^1.0.12",
-    "@js-bits/xpromise": "^1.0.14"
+    "@js-bits/enumerate": "^1.0.19",
+    "@js-bits/performance": "^1.0.3",
+    "@js-bits/timeout": "^1.0.13",
+    "@js-bits/xpromise": "^1.0.15"
   },
   "devDependencies": {
     "@js-bits/formalinter": "^1.0.3",

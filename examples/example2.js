@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars, no-console */
 // @ts-nocheck
-import Executor from '../src/executor.js';
+import { Executor } from '../src/executor.js';
 
 const document = {};
 const window = {

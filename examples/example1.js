@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars, no-console */
-import Executor from '../src/executor.js';
+import { Executor } from '../src/executor.js';
 
 const asyncOperation = new Executor((resolve, reject) => {
   // perform some asynchronous actions

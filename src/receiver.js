@@ -1,4 +1,4 @@
-import Executor from './executor.js';
+import { Executor } from './executor.js';
 
 /**
  * Does nothing but waits to be resolved or rejected by external code
@@ -53,4 +53,5 @@ class Receiver extends Executor {
   }
 }
 
-export default Receiver;
+// eslint-disable-next-line import/prefer-default-export
+export { Receiver };

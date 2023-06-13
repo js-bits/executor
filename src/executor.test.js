@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies, max-classes-per-file */
 import { jest } from '@jest/globals';
 import Timeout from '@js-bits/timeout';
-import Executor from './executor.js';
+import { Executor } from './executor.js';
 // const Timeout = require('@js-bits/timeout');
 // const { Executor } = require('../dist/index.cjs');
 
@@ -10,11 +10,11 @@ const { STATES } = Executor;
 describe('Executor', () => {
   /** @type {ConstructorParameters<typeof Executor<unknown>>[0]} */
   let executorFunc;
-  /** @type {Executor<unknown>} */
+  /** @type {Executor<unknown | void>} */
   let executor;
 
   const createClass = () => {
-    /** @extends {Executor<unknown>} */
+    /** @extends {Executor<unknown | void>} */
     class ExtExecutor extends Executor {
       constructor(/** @type {ConstructorParameters<typeof Executor<unknown>>[1]} */ options) {
         super(executorFunc, options);
@@ -153,7 +153,9 @@ describe('Executor', () => {
       expect(executor.timings[STATES.EXECUTED]).toBeUndefined();
       executor.execute();
       expect(executor.timings[STATES.EXECUTED]).toBeDefined();
-      expect(executor.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(executor.timings[STATES.CREATED]);
+      expect(executor.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(
+        /** @type {number} */ (executor.timings[STATES.CREATED])
+      );
     });
 
     describe('when a timeout is specified', () => {
@@ -226,7 +228,7 @@ describe('Executor', () => {
       test('should finalize with RESOLVED state', async () => {
         expect.assertions(4);
         expect(executor.timings[STATES.RESOLVED]).toBeUndefined();
-        executor.resolve();
+        /** @type {Executor<void>} */ (executor).resolve();
         const promise = executor.execute();
         expect(executor.timings[STATES.RESOLVED]).toBeGreaterThan(0);
         expect(executor.timings[STATES.RESOLVED]).toEqual(executor.timings[STATES.SETTLED]);
@@ -241,10 +243,12 @@ describe('Executor', () => {
         expect(executor.timings[STATES.RESOLVED]).toBeUndefined();
         const promise = executor.execute();
         setTimeout(() => {
-          executor.resolve();
+          /** @type {Executor<void>} */ (executor).resolve();
           expect(executor.timings[STATES.RESOLVED]).toBeGreaterThan(0);
           expect(executor.timings[STATES.RESOLVED]).toEqual(executor.timings[STATES.SETTLED]);
-          const duration = executor.timings[STATES.RESOLVED] - executor.timings[STATES.EXECUTED];
+          const duration =
+            /** @type {number} */ (executor.timings[STATES.RESOLVED]) -
+            /** @type {number} */ (executor.timings[STATES.EXECUTED]);
           expect(duration).toBeGreaterThanOrEqual(80);
           expect(duration).toBeLessThanOrEqual(200);
         }, 100);
@@ -258,7 +262,7 @@ describe('Executor', () => {
           timeout: 100,
         });
         jest.spyOn(executor.timeout, 'clear');
-        executor.resolve();
+        /** @type {Executor<void>} */ (executor).resolve();
         expect(executor.timeout.clear).toHaveBeenCalledTimes(1);
       });
     });
@@ -305,7 +309,9 @@ describe('Executor', () => {
           executor.reject(new Error('Rejected error'));
           expect(executor.timings[STATES.REJECTED]).toBeGreaterThan(0);
           expect(executor.timings[STATES.REJECTED]).toEqual(executor.timings[STATES.SETTLED]);
-          const duration = executor.timings[STATES.REJECTED] - executor.timings[STATES.EXECUTED];
+          const duration =
+            /** @type {number} */ (executor.timings[STATES.REJECTED]) -
+            /** @type {number} */ (executor.timings[STATES.EXECUTED]);
           expect(duration).toBeGreaterThanOrEqual(80);
           expect(duration).toBeLessThanOrEqual(200);
         }, 100);

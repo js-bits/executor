@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import Executor from './executor.js';
-import Receiver from './receiver.js';
+import { Executor } from './executor.js';
+import { Receiver } from './receiver.js';
 // const { Executor, Receiver } = require('../dist/index.cjs');
 
 const { STATES } = Receiver;
@@ -22,11 +22,15 @@ describe('Receiver', () => {
         setTimeout(() => {
           // @ts-expect-error Expected 1 arguments, but got 3.
           receiver.resolve(123, 'str', true);
-          expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThan(receiver.timings[STATES.CREATED]);
+          expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThan(
+            /** @type {number} */ (receiver.timings[STATES.CREATED])
+          );
           receiver
             .then((...args) => {
               expect(args).toEqual([123]);
-              expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThan(receiver.timings[STATES.CREATED]);
+              expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThan(
+                /** @type {number} */ (receiver.timings[STATES.CREATED])
+              );
               return 'done';
             })
             .then(result => {
@@ -51,10 +55,14 @@ describe('Receiver', () => {
         expect(receiver.timings[STATES.EXECUTED]).toBeUndefined();
         receiver.then((...args) => {
           expect(args).toEqual([123]);
-          expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(receiver.timings[STATES.CREATED]);
+          expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(
+            /** @type {number} */ (receiver.timings[STATES.CREATED])
+          );
           done();
         });
-        expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(receiver.timings[STATES.CREATED]);
+        expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(
+          /** @type {number} */ (receiver.timings[STATES.CREATED])
+        );
       });
     });
     describe('when rejected before gets accessed', () => {
@@ -63,7 +71,9 @@ describe('Receiver', () => {
         const receiver = new Receiver();
         setTimeout(() => {
           const promise = receiver.reject(new Error('async error'));
-          expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThan(receiver.timings[STATES.CREATED]);
+          expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThan(
+            /** @type {number} */ (receiver.timings[STATES.CREATED])
+          );
           promise
             .then((...args) => {
               expect(args).toEqual([123]);
@@ -88,10 +98,14 @@ describe('Receiver', () => {
         expect(receiver.timings[STATES.EXECUTED]).toBeUndefined();
         receiver.catch((...args) => {
           expect(args).toEqual([new Error('async error')]);
-          expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(receiver.timings[STATES.CREATED]);
+          expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(
+            /** @type {number} */ (receiver.timings[STATES.CREATED])
+          );
           done();
         });
-        expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(receiver.timings[STATES.CREATED]);
+        expect(receiver.timings[STATES.EXECUTED]).toBeGreaterThanOrEqual(
+          /** @type {number} */ (receiver.timings[STATES.CREATED])
+        );
       });
     });
   });
@@ -101,10 +115,12 @@ describe('Receiver', () => {
     const receiver = new Receiver();
     expect(receiver.timings[STATES.RESOLVED]).toBeUndefined();
     setTimeout(() => {
-      receiver.resolve();
+      /** @type {Receiver<void>} */ (receiver).resolve();
       expect(receiver.timings[STATES.RESOLVED]).toBeGreaterThan(0);
       expect(receiver.timings[STATES.RESOLVED]).toEqual(receiver.timings[STATES.SETTLED]);
-      const duration = receiver.timings[STATES.RESOLVED] - receiver.timings[STATES.EXECUTED];
+      const duration =
+        /** @type {number} */ (receiver.timings[STATES.RESOLVED]) -
+        /** @type {number} */ (receiver.timings[STATES.EXECUTED]);
       expect(duration).toBeGreaterThanOrEqual(80);
       expect(duration).toBeLessThanOrEqual(200);
     }, 100);

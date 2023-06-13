@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import Receiver from '../src/receiver.js';
+// @ts-nocheck
+import { Receiver } from '../src/receiver.js';
 
 const someAsyncValue = new Receiver();
 const { EXECUTED, RESOLVED } = Receiver.STATES;
